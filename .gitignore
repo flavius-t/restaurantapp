@@ -76,6 +76,7 @@ target/
 
 # documentation
 *.docx
+*.drawio
 
 # Jupyter Notebook
 .ipynb_checkpoints
