@@ -17,6 +17,13 @@ def IngredientList(request):
 def MenuItemList(request):
     # SQL query to return list of all MenuItem tuples
     menuItems = MenuItem.objects.raw("SELECT * FROM inventory_menuitem")
-    # 'menuItemData' is used in ingredientList.html to refer to 'ingredients'
+    # 'menuItemData' is used in menuItemList.html to refer to 'menuItems'
     context = {'menuItemData': menuItems}
     return render(request, 'inventory/menuItemList.html', context)
+
+def OrderList(request):
+    # SQL query to return list of all Order tuples
+    orders = Order.objects.raw("SELECT * FROM inventory_order")
+    # 'orderData' is used in orderList.html to refer to 'orders'
+    context = {'orderData': orders}
+    return render(request, 'inventory/orderList.html', context)
