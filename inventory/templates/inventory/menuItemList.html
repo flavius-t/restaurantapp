@@ -1,0 +1,25 @@
+{% extends 'inventory/base.html' %}
+
+<!-- {% load static %} -->
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h1>MenuItem List</h1>
+    
+    <table>
+        <tr>
+            <td>Name</td>
+            <td>Cost</td>
+        </tr>
+        <tr>
+            {% for menuItem in menuItemData %}
+                <tr>
+                    <td>{{ menuItem.name }}</td>
+                    <td>{{ menuItem.cost }}</td>
+                </tr>
+            {% endfor %}
+        </tr>
+    </table>
+{% endblock %}

@@ -7,4 +7,8 @@
 
 {% block content %}
     <h1>Welcome To DjangoDelights!</h1>
+    <div>
+        <a href="{% url 'ingredientlist' %}">Ingredients Inventory</a>
+        <a href="{% url 'menuitemlist' %}">Restaurant Menu</a>
+    </div>
 {% endblock %}
