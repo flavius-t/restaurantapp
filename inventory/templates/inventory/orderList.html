@@ -1,0 +1,27 @@
+{% extends 'inventory/base.html' %}
+
+<!-- {% load static %} -->
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h1>Order List</h1>
+    
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>Date</td>
+            <td>Menu Item</td>
+        </tr>
+        <tr>
+            {% for order in orderData %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.time }}</td>
+                    <td>{{ order.item_id }}</td>
+                </tr>
+            {% endfor %}
+        </tr>
+    </table>
+{% endblock %}

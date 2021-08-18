@@ -21,3 +21,6 @@ class RecipeRequirement(models.Model):
    item = models.ForeignKey(MenuItem, on_delete=SET_NULL, blank=True, null=True)
    ingredient = models.ForeignKey(Ingredient, on_delete=SET_NULL, blank=True, null=True) 
    quantity = models.DecimalField(default=1, decimal_places=2, max_digits=3)
+
+   def __str__(self):
+       return self.item + " " + self.ingredient + " " + self.quantity

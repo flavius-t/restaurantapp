@@ -8,5 +8,6 @@ urlpatterns = [
     path('ingredients/', views.IngredientList, name='ingredientlist'),
     path('menuitems/', views.MenuItemList, name='menuitemlist'),
     path('orders/', views.OrderList, name='orderlist'),
+    path('recipes/', views.RecipeRequirementList, name='recipelist'),
 
 ]

@@ -1,0 +1,36 @@
+{% extends 'inventory/base.html' %}
+
+<!-- {% load static %} -->
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h1>RecipeRequirement List</h1>
+
+    <form method='GET'>
+        {{ form.as_p }}
+        <label for='menuItems'>Choose a MenuItem</label>
+        <select name='menuItems' id='menuItems'>
+            {% for item in menuItemData %}
+                <option value='{{ item.name }}'>{{ item.name }}</option>
+            {% endfor %}
+        </select>
+        <input type='submit' value='submit'>
+    </form>
+
+    <table>
+        <tr>
+            <td>Ingredient</td>
+            <td>Quantity</td>
+        </tr>
+        <tr>
+            {% for item in recipeData %}
+                <tr>
+                    <td><p>{{ item.ingredient_id }}</p></td>
+                    <td><p>{{ item.quantity }}</p></td>
+                </tr>
+            {% endfor %}
+        </tr>
+    </table>
+{% endblock %}
