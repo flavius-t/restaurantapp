@@ -10,3 +10,8 @@ class MenuItemCreateForm(forms.ModelForm):
     class Meta:
         model = MenuItem
         fields = ('name', 'cost')
+
+class OrderCreateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ('time', 'item_id')
