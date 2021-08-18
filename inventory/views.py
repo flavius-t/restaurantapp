@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import IngredientCreateForm
+from .forms import IngredientCreateForm, MenuItemCreateForm
 
 # Create your views here.
 
@@ -58,3 +58,9 @@ class IngredientCreateView(CreateView):
     success_url = reverse_lazy('ingredientlist')
     template_name = 'inventory/ingredientCreateForm.html'
     form_class = IngredientCreateForm
+
+class MenuItemCreateView(CreateView):
+    model = MenuItem
+    success_url = reverse_lazy('menuitemlist')
+    template_name = 'inventory/menuItemCreateForm.html'
+    form_class = MenuItemCreateForm
