@@ -1,7 +1,6 @@
 from django import forms
 from django.forms.widgets import DateTimeInput
 from .models import Ingredient, Order, MenuItem, RecipeRequirement
-from django.contrib.admin.widgets import AdminSplitDateTime
 
 class IngredientCreateForm(forms.ModelForm):
     class Meta:
@@ -24,3 +23,8 @@ class OrderCreateForm(forms.ModelForm):
         widgets = {
             'time': DateTimeInput(),
         }
+
+class RecipeCreateForm(forms.ModelForm):
+    class Meta:
+        model = RecipeRequirement
+        fields = ('item', 'ingredient', 'quantity')
