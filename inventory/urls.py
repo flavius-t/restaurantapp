@@ -13,5 +13,6 @@ urlpatterns = [
     path('menuitems/create/', views.MenuItemCreateView.as_view(), name='menuitemcreate'),
     path('orders/create/', views.OrderCreateView.as_view(), name='ordercreate'),
     path('recipes/create/', views.RecipeCreateView.as_view(), name='recipecreate'),
+    path('ingredient/update/<slug>/', views.IngredientUpdateView.as_view(), name='ingredientupdate'),
 
 ]

@@ -10,10 +10,12 @@
     
     <table>
         <tr>
-            <td>Name</td>
-            <td>Cost Per Unit</td>
-            <td>Quantity In Stock</td>
-            <td>Units</td>
+            <th>Name</th>
+            <th>Cost Per Unit</th>
+            <th>Quantity In Stock</th>
+            <th>Units</th>
+            <th></th>
+            <th></th>
         </tr>
         <tr>
             {% for ingredient in data %}
@@ -22,6 +24,8 @@
                     <td>{{ ingredient.cost }}</td>
                     <td>{{ ingredient.quantity }}</td>
                     <td>{{ ingredient.unit }}</td>
+                    <td><a href="{% url 'ingredientupdate' ingredient.slug %}">Update</a></td>
+                    <td>Delete</td>
                 </tr>
             {% endfor %}
         </tr>

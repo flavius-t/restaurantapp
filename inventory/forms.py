@@ -28,3 +28,8 @@ class RecipeCreateForm(forms.ModelForm):
     class Meta:
         model = RecipeRequirement
         fields = ('item', 'ingredient', 'quantity')
+
+class IngredientUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Ingredient
+        fields = ('name', 'quantity', 'unit', 'cost')

@@ -1,0 +1,13 @@
+{% extends './base.html' %}
+
+{% block content %}
+<h2>Update Ingredient</h2>
+<form method="POST">
+<div>
+    {% csrf_token %} 
+    {{ form.as_p }}
+    <input class="btn" type="submit" value="Save" />
+    <a href=""><button class="btn">Cancel</button></a>
+</div>
+</form>
+{% endblock %}
