@@ -22,11 +22,11 @@
                     <td>{{ order.id }}</td>
                     <td>{{ order.time }}</td>
                     <td>{{ order.item_id }}</td>
-                    <td><a href="{% url 'orderupdate' order.id %}">Update</a></td>
-                    <td></td>
+                    <td><a href="{% url 'orderupdate' order.id %}"><button class='btn'>Update</button></a></td>
+                    <td><button class='btn'>Delete</button></td>
                 </tr>
             {% endfor %}
         </tr>
     </table>
-    <p><a href="{% url 'ordercreate' %}">Add New Order</a></p>
+    <p><a href="{% url 'ordercreate' %}"><button class='btn'>Add New Order</button></a></p>
 {% endblock %}

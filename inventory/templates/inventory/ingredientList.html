@@ -24,12 +24,12 @@
                     <td>{{ ingredient.cost }}</td>
                     <td>{{ ingredient.quantity }}</td>
                     <td>{{ ingredient.unit }}</td>
-                    <td><a href="{% url 'ingredientupdate' ingredient.slug %}">Update</a></td>
-                    <td>Delete</td>
+                    <td><a href="{% url 'ingredientupdate' ingredient.slug %}"><button class='btn'>Update</button></a></td>
+                    <td><button class='btn'>Delete</button></td>
                 </tr>
             {% endfor %}
         </tr>
     </table>
-    <p><a href="{% url 'ingredientcreate' %}">Add New Ingredient</a></p>
+    <p><a href="{% url 'ingredientcreate' %}"><button class='btn'>Add New Ingredient</button></a></p>
     
 {% endblock %}

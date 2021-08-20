@@ -20,11 +20,11 @@
                 <tr>
                     <td>{{ menuItem.name }}</td>
                     <td>{{ menuItem.cost }}</td>
-                    <td><a href="{% url 'menuitemupdate' menuItem.name %}">Update</a></td>
-                    <td>Delete</td>
+                    <td><a href="{% url 'menuitemupdate' menuItem.name %}"><button class='btn'>Update</button></a></td>
+                    <td><button class=btn>Delete</button></td>
                 </tr>
             {% endfor %}
         </tr>
     </table>
-    <p><a href="{% url 'menuitemcreate' %}">Add New Menu Item</a></p>
+    <p><a href="{% url 'menuitemcreate' %}"><button class='btn'>Add New Menu Item</button></a></p>
 {% endblock %}
