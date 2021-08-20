@@ -10,14 +10,18 @@
     
     <table>
         <tr>
-            <td>Name</td>
-            <td>Cost</td>
+            <th>Name</th>
+            <th>Cost</th>
+            <th></th>
+            <th></th>
         </tr>
         <tr>
             {% for menuItem in menuItemData %}
                 <tr>
                     <td>{{ menuItem.name }}</td>
                     <td>{{ menuItem.cost }}</td>
+                    <td><a href="{% url 'menuitemupdate' menuItem.name %}">Update</a></td>
+                    <td>Delete</td>
                 </tr>
             {% endfor %}
         </tr>

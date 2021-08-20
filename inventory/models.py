@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models.deletion import SET_NULL
+from django.db.models.fields import SlugField
 from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -9,7 +11,7 @@ class Ingredient(models.Model):
     cost = models.DecimalField(default=0.0, decimal_places=2, max_digits=5)
     quantity = models.PositiveIntegerField(default=0)
     unit = models.CharField(default="g", max_length=10)
-    slug = models.SlugField(null=False, unique=True)
+    slug = SlugField(null=False, unique=True)
 
     def get_absolute_url(self):
         return reverse('ingredientupdate', kwargs={'slug': self.slug})
@@ -20,7 +22,7 @@ class MenuItem(models.Model):
 
 class Order(models.Model):
     item = models.ForeignKey(MenuItem, on_delete=SET_NULL, blank=True, null=True)
-    time = models.DateTimeField()
+    time = models.DateTimeField(null=True)
 
 class RecipeRequirement(models.Model):
    item = models.ForeignKey(MenuItem, on_delete=SET_NULL, blank=True, null=True)

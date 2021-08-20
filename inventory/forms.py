@@ -33,3 +33,16 @@ class IngredientUpdateForm(forms.ModelForm):
     class Meta:
         model = Ingredient
         fields = ('name', 'quantity', 'unit', 'cost')
+
+class MenuItemUpdateForm(forms.ModelForm):
+    class Meta:
+        model = MenuItem
+        fields = ('name', 'cost')
+
+class OrderUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ('item', 'time')
+        widgets = {
+            'time': DateTimeInput(),
+        }

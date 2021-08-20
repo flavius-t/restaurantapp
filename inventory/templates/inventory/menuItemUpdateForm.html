@@ -1,0 +1,16 @@
+{% extends 'inventory/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h2>Update Menu Item: </h2>
+    <form method="POST">
+        <div>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn" type="submit" value="Save"/>
+            <a href="{% url 'menuitemlist' %}"><button class="btn">Cancel</button></a>
+        </div>
+    </form>
+{% endblock %}
