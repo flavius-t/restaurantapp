@@ -1,7 +1,7 @@
 {% extends './base.html' %}
 
 {% block content %}
-<h2>Update Ingredient</h2>
+<h2>Update Ingredient: {{ ingredient.name }}</h2>
 <form method="POST">
 <div>
     {% csrf_token %} 
