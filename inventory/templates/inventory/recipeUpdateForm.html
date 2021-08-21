@@ -1,0 +1,14 @@
+{% extends 'inventory/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h2>Update Recipe for {{ reciperequirement.item }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn" type="submit" value="Save"/>
+    </form>
+    <p><a href="{% url 'recipelist' %}"><button class="btn">Cancel</button></a></p>
+{% endblock %}

@@ -23,12 +23,16 @@
         <tr>
             <td>Ingredient</td>
             <td>Quantity</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             {% for item in recipeData %}
                 <tr>
                     <td><p>{{ item.ingredient_id }}</p></td>
                     <td><p>{{ item.quantity }}</p></td>
+                    <td><a href="{% url 'recipeupdate' item.id %}"><button>Update</button></a></td>
+                    <td><a><button>Delete</button></a></td>
                 </tr>
             {% endfor %}
         </tr>

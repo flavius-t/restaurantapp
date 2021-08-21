@@ -46,3 +46,8 @@ class OrderUpdateForm(forms.ModelForm):
         widgets = {
             'time': DateTimeInput(),
         }
+
+class RecipeUpdateForm(forms.ModelForm):
+    class Meta:
+        model = RecipeRequirement
+        fields = ('ingredient', 'quantity')
