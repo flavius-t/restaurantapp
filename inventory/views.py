@@ -95,3 +95,8 @@ class OrderUpdateView(UpdateView):
     form_class = OrderUpdateForm
     template_name = "inventory/orderUpdateForm.html"
     success_url = reverse_lazy('orderlist')
+
+class IngredientDeleteView(DeleteView):
+    model = Ingredient
+    template_name = "inventory/ingredientDeleteForm.html"
+    success_url = reverse_lazy('ingredientlist')

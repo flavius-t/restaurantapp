@@ -1,0 +1,14 @@
+{% extends 'inventory/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <h2>Delete Ingredient: {{ ingredient.name }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <p>Are you sure you wish to delete this Ingredient?</p>
+        <input class="btn" type="submit" value="Confirm"/>
+    </form>
+    <p><a href="{% url 'ingredientlist' %}"><button class="btn">Cancel</button></a></p>
+{% endblock %}

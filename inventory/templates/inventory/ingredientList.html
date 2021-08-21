@@ -24,8 +24,8 @@
                     <td>{{ ingredient.cost }}</td>
                     <td>{{ ingredient.quantity }}</td>
                     <td>{{ ingredient.unit }}</td>
-                    <td><a href="{% url 'ingredientupdate' ingredient.slug %}"><button class='btn'>Update</button></a></td>
-                    <td><button class='btn'>Delete</button></td>
+                    <td><a href="{% url 'ingredientupdate' ingredient.name %}"><button class='btn'>Update</button></a></td>
+                    <td><a href="{% url 'ingredientdelete' ingredient.name %}"><button class='btn'>Delete</button></a></td>
                 </tr>
             {% endfor %}
         </tr>

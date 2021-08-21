@@ -31,3 +31,6 @@ class RecipeRequirement(models.Model):
 
    def __str__(self):
        return self.item + " " + self.ingredient + " " + self.quantity
+
+# class Recipe(models.Model):
+#     instructions = models.CharField(default="")
