@@ -4,17 +4,21 @@
 {% endblock %}
 
 {% block content %}
-    <h1>RecipeRequirement List</h1>
+    <div class="header">
+        <h1>RecipeRequirement List</h1>
+    </div>
 
     <form method='GET'>
-        {{ form.as_p }}
-        <label for='menuItems'>Choose a MenuItem</label>
-        <select name='menuItems' id='menuItems'>
-            {% for item in menuItemData %}
-                <option value='{{ item.name }}'>{{ item.name }}</option>
-            {% endfor %}
-        </select>
-        <input type='submit' value='submit'>
+        <div class="recipe-dropdown">
+            {{ form.as_p }}
+            <select name='menuItems' id='menuItems'>
+                <option value="0">Choose a MenuItem</option>
+                {% for item in menuItemData %}
+                    <option value='{{ item.name }}'>{{ item.name }}</option>
+                {% endfor %}
+            </select>
+            <input type='submit' value='Submit' class="input-btn">
+        </div> 
     </form>
 
     <table>
@@ -36,7 +40,7 @@
         </tr>
     </table>
 
-    <div>
+    <div class="recipe-dropdown">
         <a href="{% url 'recipecreate' %}"><button class='btn'>New Recipe Requirement</button></a>
     </div>
 {% endblock %}

@@ -1,12 +1,14 @@
 {% extends './base.html' %}
 
 {% block content %}
-<h2>Update Ingredient: {{ ingredient.name }}</h2>
+<div class="header">
+    <h2>Update Ingredient: {{ ingredient.name }}</h2>
+</div>
 <form method="POST">
-<div>
+<div class="btn-row">
     {% csrf_token %} 
     {{ form.as_p }}
-    <input class="btn" type="submit" value="Save" />
+    <input class="input-btn" type="submit" value="Save"/>
     <a href=""><button class="btn">Cancel</button></a>
 </div>
 </form>

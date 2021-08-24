@@ -4,13 +4,17 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Update Menu Item: {{ menuitem.name }}</h2>
-    <form method="POST">
-        <div>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn" type="submit" value="Save"/>
-            <a href="{% url 'menuitemlist' %}"><button class="btn">Cancel</button></a>
-        </div>
-    </form>
+    <div class="header">
+        <h2>Update Menu Item: {{ menuitem.name }}</h2>
+    </div>
+    <div class="submit-form">
+        <form method="POST">
+            <div class="btn-row">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="input-btn" type="submit" value="Save"/>
+                <a href="{% url 'menuitemlist' %}"><button class="btn">Cancel</button></a>
+            </div>
+        </form>
+    </div>
 {% endblock %}

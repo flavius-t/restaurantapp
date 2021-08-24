@@ -1,4 +1,14 @@
-button {
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('images/trees.jpg');
+}
+
+button, .input-btn {
     background-color: rgb(250, 61, 187);
     border: none;
     color:rgb(255, 255, 255);
@@ -7,14 +17,19 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+button:hover, .input-btn:hover {
     opacity: 0.5;
+}
+
+table {
+    margin: auto;
 }
 
 table, th, td {
     border-collapse: collapse;
     text-align: center;
     vertical-align: middle;
+    
 }
 
 th, td {
@@ -33,3 +48,35 @@ td:hover, th:hover {
 tr:nth-child(even) {
     background-color: rgb(91, 102, 253);
 }
+
+.home-btn-row, h1, p, .btn-row {
+    text-align: center;
+}
+
+.header {
+    background-color: rgb(0, 110, 255);
+    margin-bottom: 3%;
+    padding: 1%;
+}
+
+.header h1, .header h2 {
+    margin-top: 0;
+    position: relative;
+    padding-top: 1%;
+    font-family: 'Indie flower';
+    text-align: center;   
+}
+
+.recipe-dropdown {
+    margin: auto;
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.submit-form {
+    margin: auto;
+    text-align: center;
+}
+
+
+  
