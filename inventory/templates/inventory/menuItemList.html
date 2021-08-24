@@ -1,7 +1,5 @@
 {% extends 'inventory/base.html' %}
 
-<!-- {% load static %} -->
-
 {% block head %}
 {% endblock %}
 
@@ -20,8 +18,8 @@
                 <tr>
                     <td>{{ menuItem.name }}</td>
                     <td>{{ menuItem.cost }}</td>
-                    <td><a href="{% url 'menuitemupdate' menuItem.name %}"><button class='btn'>Update</button></a></td>
-                    <td><button class=btn>Delete</button></td>
+                    <td><a href="{% url 'menuitemupdate' menuItem.name %}">Update</a></td>
+                    <td></td>
                 </tr>
             {% endfor %}
         </tr>

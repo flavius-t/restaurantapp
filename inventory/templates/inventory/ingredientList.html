@@ -1,7 +1,5 @@
 {% extends 'inventory/base.html' %}
 
-<!-- {% load static %} -->
-
 {% block head %}
 {% endblock %}
 
@@ -24,8 +22,8 @@
                     <td>{{ ingredient.cost }}</td>
                     <td>{{ ingredient.quantity }}</td>
                     <td>{{ ingredient.unit }}</td>
-                    <td><a href="{% url 'ingredientupdate' ingredient.name %}"><button class='btn'>Update</button></a></td>
-                    <td><a href="{% url 'ingredientdelete' ingredient.name %}"><button class='btn'>Delete</button></a></td>
+                    <td><a href="{% url 'ingredientupdate' ingredient.name %}">Update</a></td>
+                    <td><a href="{% url 'ingredientdelete' ingredient.name %}">Delete</a></td>
                 </tr>
             {% endfor %}
         </tr>
