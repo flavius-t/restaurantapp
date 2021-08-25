@@ -4,11 +4,13 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Update Order: #{{ order.id }}</h2>
-    <form method="POST">
+    <div class="header">
+        <h2>Update Order: #{{ order.id }}</h2>
+    </div>
+    <form method="POST" class="input-form">
         {% csrf_token %}
         {{ form.as_p }}
-        <input class="btn" type="submit" value="Save"/>
+        <input class="input-btn" type="submit" value="Save"/>
     </form>
     <p><a href="{% url 'orderlist' %}"><button class="btn">Cancel</button></a></p>
 {% endblock %}

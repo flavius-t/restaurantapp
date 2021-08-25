@@ -39,7 +39,6 @@ def RecipeRequirementList(request):
     context = {
             'menuItemData': menuItems,
             }
-
     # validate if GET object exists
     if request.GET.get('menuItems'):
         # retrieve menuItem selected by user in dropdown menu
@@ -76,13 +75,31 @@ class RecipeCreateView(CreateView):
     model = RecipeRequirement
     template_name = 'inventory/recipeCreateForm.html'
     form_class = RecipeCreateForm
-    success_url = reverse_lazy('recipecreate')
+    success_url = reverse_lazy('recipelist')
 
 class IngredientUpdateView(UpdateView):
     model = Ingredient
     template_name = 'inventory/ingredientUpdateForm.html'
     form_class = IngredientUpdateForm
     success_url = reverse_lazy('ingredientlist')
+
+# def IngredientUpdateView(request, ingredient):
+#     name = ingredient.replace("-", " ").capitalize()
+#     context = {"ingredient": name}
+#     # Check if POST request
+#     if request.method == "POST":
+#         # Retrieve Ingredient object corresponding to name
+#         ingredient = Ingredient.objects.raw('''SELECT * FROM inventory_ingredient 
+#                                                 WHERE name = %s''', [name])
+#         if ingredient:
+#             ingredient.name = request.POST["name"]
+#             ingredient.cost = request.POST["cost"]
+#             ingredient.quantity = request.POST["quantity"]
+#             ingredient.unit = request.POST["unit"]
+#             ingredient.save()
+
+#     return render(request, 'inventory/ingredientUpdateForm.html')
+
 
 class MenuItemUpdateView(UpdateView):
     model = MenuItem

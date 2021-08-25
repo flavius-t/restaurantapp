@@ -4,11 +4,11 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Delete Ingredient: {{ ingredient.name }}</h2>
-    <form method="POST">
+    <div class="header"><h2>Delete Ingredient: {{ ingredient.name }}</h2></div>
+    <form method="POST" class="input-form">
         {% csrf_token %}
         <p>Are you sure you wish to delete this Ingredient?</p>
-        <input class="btn" type="submit" value="Confirm"/>
+        <input class="input-btn" type="submit" value="Confirm"/>
     </form>
-    <p><a href="{% url 'ingredientlist' %}"><button class="btn">Cancel</button></a></p>
+    <p><a href="{% url 'ingredientlist' %}"><button class="input-btn">Cancel</button></a></p>
 {% endblock %}

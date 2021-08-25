@@ -11,10 +11,6 @@ class Ingredient(models.Model):
     cost = models.DecimalField(default=0.0, decimal_places=2, max_digits=5)
     quantity = models.PositiveIntegerField(default=0)
     unit = models.CharField(default="g", max_length=10)
-    slug = SlugField(null=False, unique=True)
-
-    def get_absolute_url(self):
-        return reverse('ingredientupdate', kwargs={'slug': self.slug})
 
 class MenuItem(models.Model):
     name = models.CharField(primary_key=True, default="New Menu Item", max_length=30)
