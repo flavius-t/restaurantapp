@@ -67,9 +67,35 @@ class MenuItemCreateView(CreateView):
 
 class OrderCreateView(CreateView):
     model = Order
+    context_object_name = 'orders'
     success_url = reverse_lazy('orderlist')
     template_name = 'inventory/orderCreateForm.html'
     form_class = OrderCreateForm
+    
+    def post(self, request, *args, **kwargs):
+        newOrder = Order.objects.create()
+        newOrder.item_id = request.POST['item']
+        newOrder.time = request.POST['time']
+        newOrder.save()
+        orders = Order.objects.raw("SELECT * FROM inventory_order")
+        context = {'orderData': orders}
+        menuItem = request.POST['item']
+        recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
+                                                 WHERE item_id = %s''', [menuItem])
+        for item in recipereqs:
+            print(item.ingredient)
+        # ingredient = Ingredient.objects.raw('''SELECT * FROM inventory_ingredient 
+        #                                          WHERE name = %s''', [ingredientName])
+        # if ingredient:
+        #     print("yes")
+        # else:
+        #     print("no")
+
+        return render(request, 'inventory/orderList.html', context)
+        # ingredient.quantity -= 1
+        # ingredient.save()
+
+        
 
 class RecipeCreateView(CreateView):
     model = RecipeRequirement
@@ -123,3 +149,8 @@ class IngredientDeleteView(DeleteView):
     model = Ingredient
     template_name = "inventory/ingredientDeleteForm.html"
     success_url = reverse_lazy('ingredientlist')
+
+class OrderDeleteView(DeleteView):
+    model = Order
+    template_name = "inventory/orderDeleteForm.html"
+    success_url = reverse_lazy('orderlist')

@@ -1,0 +1,14 @@
+{% extends 'inventory/base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    <div class="header"><h2>Delete Order: {{ order.id }}</h2></div>
+    <form method="POST" class="input-form">
+        {% csrf_token %}
+        <p>Are you sure you wish to delete this Order?</p>
+        <input class="input-btn" type="submit" value="Confirm"/>
+    </form>
+    <p><a href="{% url 'orderlist' %}"><button class="input-btn">Cancel</button></a></p>
+{% endblock %}
