@@ -174,3 +174,8 @@ class MenuItemDeleteView(DeleteView):
     model = MenuItem
     template_name = "inventory/menuItemDeleteForm.html"
     success_url = reverse_lazy("menuitemlist")
+
+class RecipeDeleteView(DeleteView):
+    model = RecipeRequirement
+    template_name = "inventory/recipeDelete.html"
+    success_url = reverse_lazy("recipelist")
