@@ -13,8 +13,11 @@ button, .input-btn {
     border: none;
     color:rgb(255, 255, 255);
     padding: 1% 1%;
-    border-radius: 7%;
+    border-radius: 12px;
     cursor: pointer;
+    height: 50px;
+    width: 100px;
+    opacity: 1;
 }
 
 button:hover, .input-btn:hover {
@@ -47,6 +50,12 @@ td:hover, th:hover {
 
 tr:nth-child(even) {
     background-color: rgb(91, 102, 253);
+    opacity: 0.75;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(160, 166, 255);
+    opacity: 0.75;
 }
 
 .home-btn-row, h1, p, .btn-row {
@@ -54,23 +63,20 @@ tr:nth-child(even) {
 }
 
 .header {
-    background-color: rgb(0, 110, 255);
-    margin-bottom: 3%;
-    padding: 1%;
+    margin: 1% 0;
+    padding: 5px;
 }
 
-.header h1, .header h2 {
+.header h1, .header h2, p {
     margin-top: 0;
-    position: relative;
-    padding-top: 1%;
+    padding-top: 15px;
     font-family: 'Indie flower';
-    text-align: center;   
+    text-align: center; 
 }
 
 .recipe-dropdown {
     margin: auto;
     text-align: center;
-    font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .submit-form {
@@ -79,4 +85,70 @@ tr:nth-child(even) {
 }
 
 
-  
+input {
+    background-color: rgb(205, 220, 240);
+    border: none;
+    border-width: 1px;
+    border-radius: 12px;
+    height: 30px;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    margin-right: 60px;
+    padding: 0;
+    float: right;
+}
+
+nav ul li {
+    display: inline-block;
+    line-height: 80px;
+    margin: 0 5px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+    padding: 7px;
+    border-radius: 12px;
+}
+
+nav ul li a:hover {
+    background:rgb(62, 145, 255);
+    transition: 0.5s;
+}
+
+nav {
+    background-color: rgb(0, 110, 255);
+    opacity: 0.8;
+    margin-bottom: 1%;
+    height: 80px;
+}
+
+a.logo {
+    color: white;
+    font-family: "Indie flower";
+    font-size: 30px;
+    line-height: 80px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+.input-form {
+    text-align: center;
+}
+
+.recipe-table {
+    margin: 1% auto;
+}
+
+.nav-img {
+    margin: -20px 60px;
+    margin-right: 20px;
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 50%;
+}
