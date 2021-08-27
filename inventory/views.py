@@ -73,28 +73,23 @@ class OrderCreateView(CreateView):
     form_class = OrderCreateForm
     
     def post(self, request, *args, **kwargs):
+        # Create new Order object, fill fields with input from POST request
         newOrder = Order.objects.create()
         newOrder.item_id = request.POST['item']
         newOrder.time = request.POST['time']
         newOrder.save()
+        # Retrieve update list of Order, for displaying OrderList after finished
         orders = Order.objects.raw("SELECT * FROM inventory_order")
         context = {'orderData': orders}
-        menuItem = request.POST['item']
+        # Retrieve recipeRequirements corresponding to the MenuItem in the new Order
         recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
-                                                 WHERE item_id = %s''', [menuItem])
+                                                 WHERE item_id = %s''', [newOrder.item_id])
+        # Update Ingredient inventory to reflect ingredients used in new Order
         for item in recipereqs:
-            print(item.ingredient)
-        # ingredient = Ingredient.objects.raw('''SELECT * FROM inventory_ingredient 
-        #                                          WHERE name = %s''', [ingredientName])
-        # if ingredient:
-        #     print("yes")
-        # else:
-        #     print("no")
+            item.ingredient.quantity -= item.quantity
+            item.ingredient.save()
 
         return render(request, 'inventory/orderList.html', context)
-        # ingredient.quantity -= 1
-        # ingredient.save()
-
         
 
 class RecipeCreateView(CreateView):
@@ -154,3 +149,23 @@ class OrderDeleteView(DeleteView):
     model = Order
     template_name = "inventory/orderDeleteForm.html"
     success_url = reverse_lazy('orderlist')
+
+    def post(self, request, *args, **kwargs):
+        # Retrieve order object to be deleted from POST request
+        order = self.get_object()
+        # Update Ingredients inventory
+        # Retrieve recipeRequirements corresponding to the MenuItem in the Order
+        recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
+                                                 WHERE item_id = %s''', [order.item_id])
+        # Update Ingredient inventory to reflect restocking ingredients used in Order
+        for item in recipereqs:
+            item.ingredient.quantity += item.quantity
+            item.ingredient.save()
+
+        # Delete order
+        order.delete()
+        # Generate updated list of Orders for display
+        orders = Order.objects.all()
+        context = {'orderData': orders}
+        
+        return render(request, 'inventory/orderList.html', context)
