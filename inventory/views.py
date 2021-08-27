@@ -169,3 +169,8 @@ class OrderDeleteView(DeleteView):
         context = {'orderData': orders}
         
         return render(request, 'inventory/orderList.html', context)
+
+class MenuItemDeleteView(DeleteView):
+    model = MenuItem
+    template_name = "inventory/menuItemDeleteForm.html"
+    success_url = reverse_lazy("menuitemlist")

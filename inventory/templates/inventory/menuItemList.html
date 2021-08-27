@@ -21,7 +21,7 @@
                     <td>{{ menuItem.name }}</td>
                     <td>{{ menuItem.cost }}</td>
                     <td><a href="{% url 'menuitemupdate' menuItem.name %}">Update</a></td>
-                    <td></td>
+                    <td><a href="{% url 'menuitemdelete' menuItem.name %}">Delete</a></td>
                 </tr>
             {% endfor %}
         </tr>
