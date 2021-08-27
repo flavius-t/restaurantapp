@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from .forms import IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, OrderUpdateForm, RecipeCreateForm, RecipeUpdateForm
-
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 
 # Create your views here.
 
@@ -78,9 +79,6 @@ class OrderCreateView(CreateView):
         newOrder.item_id = request.POST['item']
         newOrder.time = request.POST['time']
         newOrder.save()
-        # Retrieve update list of Order, for displaying OrderList after finished
-        orders = Order.objects.raw("SELECT * FROM inventory_order")
-        context = {'orderData': orders}
         # Retrieve recipeRequirements corresponding to the MenuItem in the new Order
         recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
                                                  WHERE item_id = %s''', [newOrder.item_id])
@@ -89,7 +87,7 @@ class OrderCreateView(CreateView):
             item.ingredient.quantity -= item.quantity
             item.ingredient.save()
 
-        return render(request, 'inventory/orderList.html', context)
+        return redirect('orderlist')
         
 
 class RecipeCreateView(CreateView):
@@ -151,7 +149,7 @@ class OrderDeleteView(DeleteView):
     success_url = reverse_lazy('orderlist')
 
     def post(self, request, *args, **kwargs):
-        # Retrieve order object to be deleted from POST request
+        # Retrieve Order object to be deleted from POST request
         order = self.get_object()
         # Update Ingredients inventory
         # Retrieve recipeRequirements corresponding to the MenuItem in the Order
@@ -164,11 +162,8 @@ class OrderDeleteView(DeleteView):
 
         # Delete order
         order.delete()
-        # Generate updated list of Orders for display
-        orders = Order.objects.all()
-        context = {'orderData': orders}
-        
-        return render(request, 'inventory/orderList.html', context)
+
+        return redirect('orderlist')
 
 class MenuItemDeleteView(DeleteView):
     model = MenuItem
