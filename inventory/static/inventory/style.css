@@ -17,7 +17,6 @@ button, .input-btn {
     cursor: pointer;
     height: 50px;
     width: 100px;
-    opacity: 1;
 }
 
 button:hover, .input-btn:hover {

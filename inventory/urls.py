@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from . import views
 
@@ -21,4 +21,6 @@ urlpatterns = [
     path('order/delete/<pk>/', views.OrderDeleteView.as_view(), name='orderdelete'),
     path('menuitems/delete/<pk>/', views.MenuItemDeleteView.as_view(), name='menuitemdelete'),
     path('recipes/delete/<pk>/', views.RecipeDeleteView.as_view(), name='recipedelete'),
+    path('account/', include('django.contrib.auth.urls'), name='login'),
+    path('logout/', views.LogoutView, name='logout'),
 ]

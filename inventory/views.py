@@ -4,14 +4,19 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
 from .forms import IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, OrderUpdateForm, RecipeCreateForm, RecipeUpdateForm
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
 # Home page
+@login_required
 def home(request):
-    return render(request, 'inventory/home.html')
+    context = {'name': request.user}
+    return render(request, 'inventory/home.html', context)
 
+@login_required
 def IngredientList(request):
     # SQL query to return list of all Ingredient tuples
     ingredients = Ingredient.objects.raw("SELECT * FROM inventory_ingredient")
@@ -19,6 +24,7 @@ def IngredientList(request):
     context = {'data': ingredients}
     return render(request, 'inventory/ingredientList.html', context)
 
+@login_required
 def MenuItemList(request):
     # SQL query to return list of all MenuItem tuples
     menuItems = MenuItem.objects.raw("SELECT * FROM inventory_menuitem")
@@ -26,6 +32,7 @@ def MenuItemList(request):
     context = {'menuItemData': menuItems}
     return render(request, 'inventory/menuItemList.html', context)
 
+@login_required
 def OrderList(request):
     # SQL query to return list of all Order tuples
     orders = Order.objects.raw("SELECT * FROM inventory_order")
@@ -33,6 +40,7 @@ def OrderList(request):
     context = {'orderData': orders}
     return render(request, 'inventory/orderList.html', context)
 
+@login_required
 def RecipeRequirementList(request):
     # SQL query to return all RecipeRequirement tuples related to input MenuItem
     menuItems = MenuItem.objects.raw("SELECT * FROM inventory_menuitem")
@@ -54,19 +62,19 @@ def RecipeRequirementList(request):
 
     return render(request, 'inventory/recipeRequirementList.html', context)
 
-class IngredientCreateView(CreateView):
+class IngredientCreateView(LoginRequiredMixin, CreateView):
     model = Ingredient
     success_url = reverse_lazy('ingredientlist')
     template_name = 'inventory/ingredientCreateForm.html'
     form_class = IngredientCreateForm
 
-class MenuItemCreateView(CreateView):
+class MenuItemCreateView(LoginRequiredMixin, CreateView):
     model = MenuItem
     success_url = reverse_lazy('menuitemlist')
     template_name = 'inventory/menuItemCreateForm.html'
     form_class = MenuItemCreateForm
 
-class OrderCreateView(CreateView):
+class OrderCreateView(LoginRequiredMixin, CreateView):
     model = Order
     context_object_name = 'orders'
     success_url = reverse_lazy('orderlist')
@@ -90,13 +98,13 @@ class OrderCreateView(CreateView):
         return redirect('orderlist')
         
 
-class RecipeCreateView(CreateView):
+class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = RecipeRequirement
     template_name = 'inventory/recipeCreateForm.html'
     form_class = RecipeCreateForm
     success_url = reverse_lazy('recipelist')
 
-class IngredientUpdateView(UpdateView):
+class IngredientUpdateView(LoginRequiredMixin, UpdateView):
     model = Ingredient
     template_name = 'inventory/ingredientUpdateForm.html'
     form_class = IngredientUpdateForm
@@ -120,30 +128,30 @@ class IngredientUpdateView(UpdateView):
 #     return render(request, 'inventory/ingredientUpdateForm.html')
 
 
-class MenuItemUpdateView(UpdateView):
+class MenuItemUpdateView(LoginRequiredMixin, UpdateView):
     model = MenuItem
     form_class = MenuItemUpdateForm
     template_name = "inventory/menuItemUpdateForm.html"
     success_url = reverse_lazy('menuitemlist')
 
-class OrderUpdateView(UpdateView):
+class OrderUpdateView(LoginRequiredMixin, UpdateView):
     model = Order
     form_class = OrderUpdateForm
     template_name = "inventory/orderUpdateForm.html"
     success_url = reverse_lazy('orderlist')
 
-class RecipeUpdateView(UpdateView):
+class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = RecipeRequirement
     form_class = RecipeUpdateForm
     template_name = "inventory/recipeUpdateForm.html"
     success_url = reverse_lazy('recipelist')
 
-class IngredientDeleteView(DeleteView):
+class IngredientDeleteView(LoginRequiredMixin, DeleteView):
     model = Ingredient
     template_name = "inventory/ingredientDeleteForm.html"
     success_url = reverse_lazy('ingredientlist')
 
-class OrderDeleteView(DeleteView):
+class OrderDeleteView(LoginRequiredMixin, DeleteView):
     model = Order
     template_name = "inventory/orderDeleteForm.html"
     success_url = reverse_lazy('orderlist')
@@ -165,12 +173,33 @@ class OrderDeleteView(DeleteView):
 
         return redirect('orderlist')
 
-class MenuItemDeleteView(DeleteView):
+class MenuItemDeleteView(LoginRequiredMixin, DeleteView):
     model = MenuItem
     template_name = "inventory/menuItemDeleteForm.html"
     success_url = reverse_lazy("menuitemlist")
 
-class RecipeDeleteView(DeleteView):
+class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     model = RecipeRequirement
     template_name = "inventory/recipeDelete.html"
     success_url = reverse_lazy("recipelist")
+
+def LoginView(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+    
+        # Check if there is user object matching username and password
+        user = authenticate(request, username=username, password=password)
+
+        # Check if user exists and is authenticated
+        if user is not None:
+            # Log user in
+            login(request, user)
+            # Redirect to home page
+            return redirect('home')
+
+    return render(request, 'registration/login.html')
+
+def LogoutView(request):
+    logout(request)
+    return redirect('home')
