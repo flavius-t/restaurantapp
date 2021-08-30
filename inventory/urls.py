@@ -1,4 +1,6 @@
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
+
 
 from . import views
 
@@ -23,4 +25,5 @@ urlpatterns = [
     path('recipes/delete/<pk>/', views.RecipeDeleteView.as_view(), name='recipedelete'),
     path('account/', include('django.contrib.auth.urls'), name='login'),
     path('logout/', views.LogoutView, name='logout'),
+    path('password/', views.PasswordsChangeView.as_view(), name='passwordchange'),
 ]

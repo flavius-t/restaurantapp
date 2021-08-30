@@ -16,3 +16,9 @@ input[type=submit]:hover {
 div, h2 {
     text-align: center;
 }
+
+ul {
+    list-style-position: inside;
+    text-align:left;
+    padding-left: 36%;
+}
