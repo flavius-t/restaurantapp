@@ -17,8 +17,25 @@ div, h2 {
     text-align: center;
 }
 
+p {
+    text-align: right;
+    margin-right: 42%;
+}
+
 ul {
     list-style-position: inside;
     text-align:left;
     padding-left: 36%;
+}
+
+div {
+    margin: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color:rgb(248, 3, 187);
 }
