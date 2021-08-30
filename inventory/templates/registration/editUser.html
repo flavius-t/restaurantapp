@@ -1,0 +1,15 @@
+<head>
+    {% load static %}
+    <link href="{% static 'inventory/authenticate.css' %}" rel='stylesheet' type='text/css'/>
+</head>
+
+<body>
+    <h2>Edit User: {{ user }}</h2>
+    <form class="login" method="POST">
+        <div>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Save"/>
+        </div>
+    </form>
+</body>

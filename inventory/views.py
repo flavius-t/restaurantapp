@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, OrderUpdateForm, RecipeCreateForm, RecipeUpdateForm
+from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, OrderUpdateForm, RecipeCreateForm, RecipeUpdateForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 
 # Create your views here.
 
@@ -210,3 +210,13 @@ class PasswordsChangeView(PasswordChangeView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('home')
     template_name = "registration/changePassword.html"
+
+class UserEditView(UpdateView):
+    form_class = EditUserForm
+    template_name = "registration/editUser.html"
+    success_url = reverse_lazy('home')
+    context_object_name = 'user'
+
+    def get_object(self):
+        return self.request.user
+
