@@ -1,18 +1,24 @@
+{% extends '../inventory/base.html' %}
+<!-- 
 <head>
     {% load static %}
     <link href="{% static 'inventory/authenticate.css' %}" rel='stylesheet' type='text/css'/>
-</head>
+</head> -->
 
+{% block content %}
 <body>
-    <h2>Edit User: {{ user }}</h2>
-    <form class="login" method="POST">
+    <div class="header">
+        <h2>Edit User: {{ user }}</h2>
+    </div>
+    <form class="input-form" method="POST">
         <div>
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Save"/>
+            <input type="submit" value="Save" class="input-btn"/>
         </div>
         <div>
             <a href="{% url 'passwordchange' %}">Change Password</a>
         </div>
     </form>
 </body>
+{% endblock %}

@@ -206,12 +206,12 @@ def LogoutView(request):
     logout(request)
     return redirect('home')
 
-class PasswordsChangeView(PasswordChangeView):
+class PasswordsChangeView(LoginRequiredMixin, PasswordChangeView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('home')
     template_name = "registration/changePassword.html"
 
-class UserEditView(UpdateView):
+class UserEditView(LoginRequiredMixin, UpdateView):
     form_class = EditUserForm
     template_name = "registration/editUser.html"
     success_url = reverse_lazy('home')
