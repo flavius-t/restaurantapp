@@ -22,8 +22,21 @@ def home(request):
 def IngredientList(request):
     # SQL query to return list of all Ingredient tuples
     ingredients = Ingredient.objects.raw("SELECT * FROM inventory_ingredient")
+    
+    # Display costs to restock ingredients whose quantity has fallen below 10,
+    # where cost is amount needed to raise quantity back to 10
+    restockDict = {}
+    for item in ingredients:
+        if item.quantity < 10:
+            restockCost = item.cost * (10 - item.quantity)
+            key = item.name
+            restockDict[key] = restockCost
+    # Calculate total restock cost
+    totalCost = 0
+    for key in restockDict:
+        totalCost += restockDict[key]
     # 'data' is used in ingredientList.html to refer to 'ingredients'
-    context = {'data': ingredients}
+    context = {'data': ingredients, 'restockCosts': restockDict, 'totalCost': totalCost}
     return render(request, 'inventory/ingredientList.html', context)
 
 @login_required
