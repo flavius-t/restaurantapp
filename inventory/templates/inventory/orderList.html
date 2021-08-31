@@ -29,4 +29,18 @@
         </tr>
     </table>
     <p><a href="{% url 'ordercreate' %}"><button class='btn'>Add New Order</button></a></p>
+    <table>
+        <tr>
+            <th>Daily</th>
+            <th>Monthly</th>
+            <th>Yearly</th>
+            <th>Total</th>
+        </tr>
+        <tr>
+            <td>{{ todayTotal }}</td>
+            <td>{{ monthTotal }}</td>
+            <td>{{ yearTotal }}</td>
+            <td>{{ total }}</td>     
+        </tr>
+    </table>
 {% endblock %}

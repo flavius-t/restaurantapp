@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
+from datetime import date
+import datetime
 
 # Create your views here.
 
@@ -51,8 +53,44 @@ def MenuItemList(request):
 def OrderList(request):
     # SQL query to return list of all Order tuples
     orders = Order.objects.raw("SELECT * FROM inventory_order")
+
+    # Calculate total revenue
+    totalRevenue = 0
+    yearRevenue = 0
+    todayRevenue = 0
+    monthRevenue = 0
+    todayDate = date.today()
+    print(todayDate)
+    weekDay = todayDate.weekday()
+    print("Today's weekday:")
+    print(weekDay)
+    yearStart = todayDate.year
+    print(yearStart)
+    for order in orders:
+        totalRevenue += order.item.cost
+        # Calculate this year's revenue
+        if order.time.year == yearStart:
+            yearRevenue += order.item.cost
+            # Calculate this month's revenue
+            if order.time.month == todayDate.month:
+                # print(order.time.month)
+                monthRevenue += order.item.cost
+                # Calculate today's revenue
+                if order.time.day == todayDate.day:
+                    # print(order.time.day)
+                    todayRevenue += order.item.cost
+    print(totalRevenue)
+    print(yearRevenue)
+    print(todayRevenue)
+    print(monthRevenue)
     # 'orderData' is used in orderList.html to refer to 'orders'
-    context = {'orderData': orders}
+    context = {
+        'orderData': orders, 
+        'total': totalRevenue, 
+        'yearTotal': yearRevenue,
+        'monthTotal': monthRevenue,
+        'todayTotal': todayRevenue,
+        }
     return render(request, 'inventory/orderList.html', context)
 
 @login_required
