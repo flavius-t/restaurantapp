@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.forms import PasswordChangeForm
 from datetime import date
+from django.utils.timezone import make_aware
 import datetime
 
 # Create your views here.
@@ -53,44 +54,43 @@ def MenuItemList(request):
 @login_required
 def OrderList(request):
     # SQL query to return list of all Order tuples
-    orders = Order.objects.raw("SELECT * FROM inventory_order")
+    orders = Order.objects.all()
 
-    # # Calculate total revenue
-    # totalRevenue = 0
-    # yearRevenue = 0
-    # todayRevenue = 0
-    # monthRevenue = 0
-    # todayDate = date.today()
-    # print(todayDate)
-    # weekDay = todayDate.weekday()
-    # print("Today's weekday:")
-    # print(weekDay)
-    # yearStart = todayDate.year
-    # print(yearStart)
-    # for order in orders:
-    #     totalRevenue += order.item.cost
-    #     # Calculate this year's revenue
-    #     if order.time.year == yearStart:
-    #         yearRevenue += order.item.cost
-    #         # Calculate this month's revenue
-    #         if order.time.month == todayDate.month:
-    #             # print(order.time.month)
-    #             monthRevenue += order.item.cost
-    #             # Calculate today's revenue
-    #             if order.time.day == todayDate.day:
-    #                 # print(order.time.day)
-    #                 todayRevenue += order.item.cost
-    # print(totalRevenue)
-    # print(yearRevenue)
-    # print(todayRevenue)
-    # print(monthRevenue)
+    # Calculate total revenue
+    totalRevenue = 0
+    yearRevenue = 0
+    todayRevenue = 0
+    monthRevenue = 0
+    todayDate = date.today()
+    print("Today's Date: " + str(todayDate))
+    print(todayDate.day)
+    yearStart = todayDate.year
+    # Retrieve list of all MenuItems related to each Order object
+    for order in orders:
+        items = order.item.all()
+        # Calculate revenue from each MenuItem of each Order
+        for menuItem in items:
+            totalRevenue += menuItem.cost
+            # Calculate this year's revenue
+            if order.time.year == yearStart:
+                # print("Year Match:" + str(order.time.year))
+                yearRevenue += menuItem.cost
+                # Calculate this month's revenue
+                if order.time.month == todayDate.month:
+                    # print("Month Match:" + str(order.time.month))
+                    monthRevenue += menuItem.cost
+                    print(order.time.day)
+                    # Calculate today's revenue
+                    if order.time.day == todayDate.day:
+                        # print("Day Match:" + str(order.time.day))
+                        todayRevenue += menuItem.cost
     # 'orderData' is used in orderList.html to refer to 'orders'
     context = {
         'orderData': orders, 
-        # 'total': totalRevenue, 
-        # 'yearTotal': yearRevenue,
-        # 'monthTotal': monthRevenue,
-        # 'todayTotal': todayRevenue,
+        'total': totalRevenue, 
+        'yearTotal': yearRevenue,
+        'monthTotal': monthRevenue,
+        'todayTotal': todayRevenue,
         }
     return render(request, 'inventory/orderList.html', context)
 
@@ -275,6 +275,6 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         return self.request.user
 
-class OrderDetailView(DetailView):
+class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = "inventory/orderDetails.html"
