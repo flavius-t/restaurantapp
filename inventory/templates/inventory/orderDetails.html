@@ -6,7 +6,7 @@
     </div>
     <ul>
         {% for menuItem in order.item.all %}
-            <li>{{ menuItem.name }}</li>
+            <li>{{ menuItem.name }}: ${{ menuItem.cost }}</li>
         {% endfor %}
     </ul>
 {% endblock %}
