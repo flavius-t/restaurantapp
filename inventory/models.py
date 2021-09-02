@@ -19,8 +19,11 @@ class MenuItem(models.Model):
     cost = models.DecimalField(default=0.0, decimal_places=2, max_digits=5)
 
 class Order(models.Model):
-    item = models.ForeignKey(MenuItem, on_delete=SET_NULL, blank=True, null=True)
+    item = models.ManyToManyField(MenuItem)
     time = models.DateTimeField(null=True)
+
+    def getMenuItemsAmount(self):
+        return len(self.item.all())
 
 class RecipeRequirement(models.Model):
    item = models.ForeignKey(MenuItem, on_delete=SET_NULL, blank=True, null=True)
@@ -29,6 +32,3 @@ class RecipeRequirement(models.Model):
 
    def __str__(self):
        return self.item + " " + self.ingredient + " " + self.quantity
-
-# class Recipe(models.Model):
-#     instructions = models.CharField(default="")

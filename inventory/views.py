@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.views.generic.detail import DetailView
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
@@ -54,42 +55,42 @@ def OrderList(request):
     # SQL query to return list of all Order tuples
     orders = Order.objects.raw("SELECT * FROM inventory_order")
 
-    # Calculate total revenue
-    totalRevenue = 0
-    yearRevenue = 0
-    todayRevenue = 0
-    monthRevenue = 0
-    todayDate = date.today()
-    print(todayDate)
-    weekDay = todayDate.weekday()
-    print("Today's weekday:")
-    print(weekDay)
-    yearStart = todayDate.year
-    print(yearStart)
-    for order in orders:
-        totalRevenue += order.item.cost
-        # Calculate this year's revenue
-        if order.time.year == yearStart:
-            yearRevenue += order.item.cost
-            # Calculate this month's revenue
-            if order.time.month == todayDate.month:
-                # print(order.time.month)
-                monthRevenue += order.item.cost
-                # Calculate today's revenue
-                if order.time.day == todayDate.day:
-                    # print(order.time.day)
-                    todayRevenue += order.item.cost
-    print(totalRevenue)
-    print(yearRevenue)
-    print(todayRevenue)
-    print(monthRevenue)
+    # # Calculate total revenue
+    # totalRevenue = 0
+    # yearRevenue = 0
+    # todayRevenue = 0
+    # monthRevenue = 0
+    # todayDate = date.today()
+    # print(todayDate)
+    # weekDay = todayDate.weekday()
+    # print("Today's weekday:")
+    # print(weekDay)
+    # yearStart = todayDate.year
+    # print(yearStart)
+    # for order in orders:
+    #     totalRevenue += order.item.cost
+    #     # Calculate this year's revenue
+    #     if order.time.year == yearStart:
+    #         yearRevenue += order.item.cost
+    #         # Calculate this month's revenue
+    #         if order.time.month == todayDate.month:
+    #             # print(order.time.month)
+    #             monthRevenue += order.item.cost
+    #             # Calculate today's revenue
+    #             if order.time.day == todayDate.day:
+    #                 # print(order.time.day)
+    #                 todayRevenue += order.item.cost
+    # print(totalRevenue)
+    # print(yearRevenue)
+    # print(todayRevenue)
+    # print(monthRevenue)
     # 'orderData' is used in orderList.html to refer to 'orders'
     context = {
         'orderData': orders, 
-        'total': totalRevenue, 
-        'yearTotal': yearRevenue,
-        'monthTotal': monthRevenue,
-        'todayTotal': todayRevenue,
+        # 'total': totalRevenue, 
+        # 'yearTotal': yearRevenue,
+        # 'monthTotal': monthRevenue,
+        # 'todayTotal': todayRevenue,
         }
     return render(request, 'inventory/orderList.html', context)
 
@@ -137,16 +138,22 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         # Create new Order object, fill fields with input from POST request
         newOrder = Order.objects.create()
-        newOrder.item_id = request.POST['item']
+        # retrieve list from manytomany field in POST request, add to new Order object
+        items = request.POST.getlist('item')
+        for x in items:
+            newOrder.item.add(x)
         newOrder.time = request.POST['time']
         newOrder.save()
-        # Retrieve recipeRequirements corresponding to the MenuItem in the new Order
-        recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
-                                                 WHERE item_id = %s''', [newOrder.item_id])
-        # Update Ingredient inventory to reflect ingredients used in new Order
-        for item in recipereqs:
-            item.ingredient.quantity -= item.quantity
-            item.ingredient.save()
+
+        for menuItem in newOrder.item.all():
+            print(menuItem.name)
+            # Retrieve recipeRequirements corresponding to the MenuItem in the new Order
+            recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
+                                                    WHERE item_id = %s''', [menuItem.name])
+            # Update Ingredient inventory to reflect ingredients used in new Order
+            for item in recipereqs:
+                item.ingredient.quantity -= item.quantity
+                item.ingredient.save()
 
         return redirect('orderlist')
         
@@ -213,13 +220,16 @@ class OrderDeleteView(LoginRequiredMixin, DeleteView):
         # Retrieve Order object to be deleted from POST request
         order = self.get_object()
         # Update Ingredients inventory
-        # Retrieve recipeRequirements corresponding to the MenuItem in the Order
-        recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
-                                                 WHERE item_id = %s''', [order.item_id])
-        # Update Ingredient inventory to reflect restocking ingredients used in Order
-        for item in recipereqs:
-            item.ingredient.quantity += item.quantity
-            item.ingredient.save()
+        # Retrieve recipeRequirements corresponding to each MenuItem in the Order
+        for menuItem in order.item.all():
+            # for this menuItem, retrieve recipe requirements
+            recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
+                                                    WHERE item_id = %s''', [menuItem.name])
+            # Update Ingredient inventory to reflect restocking ingredients used in Order
+            for item in recipereqs:
+                if item is not None:
+                    item.ingredient.quantity += item.quantity
+                    item.ingredient.save()
 
         # Delete order
         order.delete()
@@ -271,3 +281,6 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         return self.request.user
 
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = "inventory/orderDetails.html"

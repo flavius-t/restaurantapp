@@ -1,0 +1,12 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+    <div class="header">
+        <h2>Purchase made on {{ order.time }}</h2>
+    </div>
+    <ul>
+        {% for menuItem in order.item.all %}
+            <li>{{ menuItem.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
