@@ -41,13 +41,6 @@ class MenuItemUpdateForm(forms.ModelForm):
         model = MenuItem
         fields = ('name', 'cost')
 
-class OrderUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Order
-        fields = ('item', 'time')
-        widgets = {
-            'time': DateTimeInput(),
-        }
 
 class RecipeUpdateForm(forms.ModelForm):
     class Meta:

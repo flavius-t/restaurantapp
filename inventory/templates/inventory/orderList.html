@@ -15,7 +15,6 @@
             <th>Menu Item</th>
             <th></th>
             <th></th>
-            <th></th>
         </tr>
         <tr>
             {% for order in orderData %}
@@ -24,7 +23,6 @@
                     <td>{{ order.time }}</td>
                     <td>{{ order.getMenuItemsAmount }}</td>
                     <td><a href="{% url 'orderdetails' order.id %}">Details</a></td>
-                    <td><a href="{% url 'orderupdate' order.id %}">Update</a></td>
                     <td><a href="{% url 'orderdelete' order.id %}">Delete</a></td>
                 </tr>
             {% endfor %}

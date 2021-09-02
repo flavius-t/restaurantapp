@@ -3,13 +3,13 @@ from django.views.generic.detail import DetailView
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, OrderUpdateForm, RecipeCreateForm, RecipeUpdateForm
+from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
 from datetime import date
 import datetime
 
@@ -193,12 +193,6 @@ class MenuItemUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MenuItemUpdateForm
     template_name = "inventory/menuItemUpdateForm.html"
     success_url = reverse_lazy('menuitemlist')
-
-class OrderUpdateView(LoginRequiredMixin, UpdateView):
-    model = Order
-    form_class = OrderUpdateForm
-    template_name = "inventory/orderUpdateForm.html"
-    success_url = reverse_lazy('orderlist')
 
 class RecipeUpdateView(LoginRequiredMixin, UpdateView):
     model = RecipeRequirement
