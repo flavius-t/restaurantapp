@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="{% static 'inventory/style.css' %}" type='text/css'>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Indie Flower">
         <link rel="shortcut icon" type="image/png" href="{% static 'inventory/images/favicon.ico' %}"/>
-        <title>DjangoDelights</title>
+        <title>MyRestaurant</title>
         {% block head %}
         {% endblock %}
     </head>
@@ -17,7 +17,7 @@
             <div class="nav-img">
                 <a href="{% url 'home' %}"><img src="{% static 'inventory/images/favicon-small.png' %}"/></a>
             </div>
-            <a href="{% url 'home' %}" class=logo>DjangoDelights</a>
+            <a href="{% url 'home' %}" class=logo>MyRestaurant</a>
             <ul>
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'ingredientlist' %}">Ingredients</a></li>
