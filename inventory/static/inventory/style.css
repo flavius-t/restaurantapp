@@ -8,21 +8,88 @@ body {
     background-image: url('images/trees.jpg');
 }
 
-button, .input-btn {
-    background-color: rgb(250, 61, 187);
-    border: none;
-    color:rgb(255, 255, 255);
-    padding: 1% 1%;
-    border-radius: 12px;
-    cursor: pointer;
-    height: 50px;
-    width: 100px;
+a {
+    text-decoration: none;
+    color: white;
 }
 
-button:hover, .input-btn:hover {
-    opacity: 0.5;
+.container-flex {
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid red;
+    margin: 0 auto;
 }
 
+.container-flex.single-col {
+    justify-content: center;
+}
+
+h1 {
+    text-align: center;
+    border: 1px solid red;
+}
+
+/* ************* */
+/* Mobile Layout */
+/* ************* */
+
+/* Nav Layout */
+nav {
+    background-color: rgb(0, 110, 255);
+    overflow: hidden;
+}
+
+.nav-ul {
+    list-style: none;
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-burger {
+    border: 2px solid white;
+    padding: 5px 5px;
+    border-radius: 5px;
+    order: 2;
+}
+
+.nav-li {
+    order: 4;
+    display: none;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.nav-li.button {
+    order: 3;
+}
+
+.nav-li.button a {
+    padding: 5px;
+    width: 100%;
+}
+
+.nav-li.button.second {
+    border-bottom: 1px solid grey;
+}
+
+.nav-logo {
+    order: 1;
+    font-size: 20px;
+}
+
+/* Expands nav menu from burger-icon, added via JS to .nav-ul */
+.active .nav-li {
+    display: block;
+}
+
+/* Tables Layout */
 table {
     margin: auto;
 }
@@ -57,119 +124,34 @@ tr:nth-child(odd) {
     opacity: 0.75;
 }
 
-.home-btn-row, h1, p, .btn-row {
-    text-align: center;
-}
+/* ******************* */
+/* Large Screen Layout */
+/* ******************* */
 
-.header {
-    margin: 1% 0;
-    padding: 5px;
-}
+@media (min-width: 750px) {
+    .nav-ul {
+        align-items: center;
+    }
 
-.header h1, .header h2, p {
-    margin-top: 0;
-    padding-top: 15px;
-    font-family: 'Indie flower';
-    text-align: center; 
-}
+    .nav-logo {
+        flex: 1;
+    }
 
-.recipe-dropdown {
-    margin: auto;
-    text-align: center;
-}
+    .nav-li {
+        display: block;
+        width: auto;
+        order:2;
+    }
 
-.submit-form {
-    margin: auto;
-    text-align: center;
-}
+    .nav-burger {
+        display: none;
+    }
 
+    .nav-li.button.second {
+        border-bottom: 0;
+    }
 
-input {
-    background-color: rgb(205, 220, 240);
-    border: none;
-    border-width: 1px;
-    border-radius: 12px;
-    height: 30px;
-    text-align: center;
+    .nav-li.button {
+        order:3
+    }
 }
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    margin-right: 60px;
-    padding: 0;
-    float: right;
-}
-
-nav ul li {
-    display: inline-block;
-    line-height: 80px;
-    margin: 0 5px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 17px;
-    padding: 7px;
-    border-radius: 12px;
-}
-
-nav ul li a:hover {
-    background:rgb(62, 145, 255);
-    transition: 0.5s;
-}
-
-nav {
-    background-color: rgb(0, 110, 255);
-    opacity: 0.8;
-    margin-bottom: 1%;
-    height: 80px;
-}
-
-a.logo {
-    color: white;
-    font-family: "Indie flower";
-    font-size: 30px;
-    line-height: 80px;
-    display: inline-block;
-    text-decoration: none;
-}
-
-.input-form {
-    text-align: center;
-}
-
-.recipe-table {
-    margin: 1% auto;
-}
-
-.nav-img {
-    margin: -20px 60px;
-    margin-right: 20px;
-    display: inline-block;
-    overflow: hidden;
-    border-radius: 50%;
-}
-
-a {
-    text-decoration: none;
-}
-
-a:hover {
-    color:rgb(250, 61, 187);
-}
-
-div {
-    margin: 20px 20px;
-}
-
-ul {
-    list-style: inside;
-    text-align: left;
-    margin-left: 35%;
-}
- p {
-    text-align: right;
-    margin-right: 44%;
- }
