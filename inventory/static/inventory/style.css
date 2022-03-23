@@ -13,13 +13,32 @@ a {
     color: white;
 }
 
+p {
+    text-align: center;
+}
+
+button {
+    background-color: orange;
+    border: none;
+    text-decoration: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+button:hover {
+    opacity: 0.7;
+    cursor:pointer;
+    border: 1px solid white;
+}
+
 .container-flex {
     width: 95%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-around;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     margin: 0 auto;
 }
 
@@ -29,7 +48,6 @@ a {
 
 h1 {
     text-align: center;
-    border: 1px solid red;
 }
 
 /* ************* */
@@ -64,6 +82,14 @@ nav {
     width: 100%;
     text-align: center;
     padding: 10px;
+}
+
+.nav-li a {
+    font-size: 18px;
+}
+
+.nav-li a:hover {
+    color: rgb(207, 207, 207);
 }
 
 .nav-li.button {
@@ -128,7 +154,7 @@ tr:nth-child(odd) {
 /* Large Screen Layout */
 /* ******************* */
 
-@media (min-width: 750px) {
+@media (min-width: 850px) {
     .nav-ul {
         align-items: center;
     }
@@ -141,17 +167,22 @@ tr:nth-child(odd) {
         display: block;
         width: auto;
         order:2;
+        padding: 5px;
+        margin: 5px;
     }
 
     .nav-burger {
         display: none;
     }
 
-    .nav-li.button.second {
-        border-bottom: 0;
+    .nav-li.button {
+        order:3;
+        border: 2px solid white;
+        border-radius: 3px;
+        background-color: rgb(8, 6, 116);
     }
 
-    .nav-li.button {
-        order:3
+    .nav-li.button.second {
+        border-bottom: 2px solid white;
     }
 }
