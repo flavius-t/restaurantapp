@@ -1,10 +1,11 @@
 * {
     box-sizing: border-box;
+    border: 1px solid red;
+    padding: 0;
+    margin: 0;
 }
 
 body {
-    margin: 0;
-    padding: 0;
     background-image: url('images/trees.jpg');
 }
 
@@ -37,8 +38,8 @@ button:hover {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-around;
-    /* border: 1px solid red; */
+    justify-content: space-between;
+    border: 1px solid red;
     margin: 0 auto;
 }
 
@@ -67,6 +68,10 @@ nav {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    border: 1px solid red;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: auto;
 }
 
 .nav-burger {
@@ -155,8 +160,13 @@ tr:nth-child(odd) {
 /* ******************* */
 
 @media (min-width: 850px) {
+    .container-flex {
+        justify-content: space-between;
+    }
+    
     .nav-ul {
         align-items: center;
+        margin: auto;
     }
 
     .nav-logo {
@@ -184,5 +194,6 @@ tr:nth-child(odd) {
 
     .nav-li.button.second {
         border-bottom: 2px solid white;
+        margin-right: 0;
     }
 }
