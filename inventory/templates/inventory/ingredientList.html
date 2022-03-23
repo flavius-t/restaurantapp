@@ -4,52 +4,52 @@
 {% endblock %}
 
 {% block content %}
-    <div class="header">
-        <h1>Ingredients List</h1>
-    </div>
-    
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Cost Per Unit</th>
-            <th>Quantity In Stock</th>
-            <th>Units</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tr>
-            {% for ingredient in data %}
+    <div class="container-flex">
+        <div class="flex-col">
+            <h1>Ingredients List</h1>
+            <table>
                 <tr>
-                    <td>{{ ingredient.name }}</td>
-                    <td>{{ ingredient.cost }}</td>
-                    <td>{{ ingredient.quantity }}</td>
-                    <td>{{ ingredient.unit }}</td>
-                    <td><a href="{% url 'ingredientupdate' ingredient.name %}">Update</a></td>
-                    <td><a href="{% url 'ingredientdelete' ingredient.name %}">Delete</a></td>
+                    <th>Name</th>
+                    <th>Cost Per Unit</th>
+                    <th>Quantity In Stock</th>
+                    <th>Units</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-        </tr>
-    </table>
-    <p><a href="{% url 'ingredientcreate' %}"><button class='btn'>Add New Ingredient</button></a></p>
-
-    <div class="header">
-        <h2>Ingredients Needing Restocking</h2>
-        <table>
-            <tr>
-                <th>Name</th>
-                <th>Cost To Restock to 10</th>
-            </tr>
-            {% for key, value in restockCosts.items %}
                 <tr>
-                    <td>{{ key }}</td>
-                    <td>{{ value }}</td>
-                </tr>   
-            {% endfor %}
-            <tr>
-                <td><b>Total Costs</b></td>
-                <td>{{ totalCost }}</td>
-            </tr>
-        </table>
-    </div>
-    
+                    {% for ingredient in data %}
+                        <tr>
+                            <td>{{ ingredient.name }}</td>
+                            <td>{{ ingredient.cost }}</td>
+                            <td>{{ ingredient.quantity }}</td>
+                            <td>{{ ingredient.unit }}</td>
+                            <td><a href="{% url 'ingredientupdate' ingredient.name %}">Update</a></td>
+                            <td><a href="{% url 'ingredientdelete' ingredient.name %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tr>
+            </table>
+            <p><a href="{% url 'ingredientcreate' %}"><button class='btn'>Add New Ingredient</button></a></p>
+        </div>
+        
+        <div class="flex-col">
+            <h2>Ingredients Needing Restocking</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Cost To Restock to 10</th>
+                </tr>
+                {% for key, value in restockCosts.items %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ value }}</td>
+                    </tr>   
+                {% endfor %}
+                <tr>
+                    <td><b>Total Costs</b></td>
+                    <td>{{ totalCost }}</td>
+                </tr>
+            </table>
+        </div>
+    </div> 
 {% endblock %}

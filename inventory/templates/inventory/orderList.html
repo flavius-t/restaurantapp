@@ -4,43 +4,47 @@
 {% endblock %}
 
 {% block content %}
-    <div class="header">
-        <h1>Order List</h1>
-    </div>
-    
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Date</th>
-            <th>Menu Item</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tr>
-            {% for order in orderData %}
+    <div class="container-flex">
+        <div class="flex-col">
+            <h1>Order List</h1>
+            <table>
                 <tr>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.time }}</td>
-                    <td>{{ order.getMenuItemsAmount }}</td>
-                    <td><a href="{% url 'orderdetails' order.id %}">Details</a></td>
-                    <td><a href="{% url 'orderdelete' order.id %}">Delete</a></td>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Menu Item</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-        </tr>
-    </table>
-    <p><a href="{% url 'ordercreate' %}"><button class='btn'>Add New Order</button></a></p>
-    <table>
-        <tr>
-            <th>Daily</th>
-            <th>Monthly</th>
-            <th>Yearly</th>
-            <th>Total</th>
-        </tr>
-        <tr>
-            <td>{{ todayTotal }}</td>
-            <td>{{ monthTotal }}</td>
-            <td>{{ yearTotal }}</td>
-            <td>{{ total }}</td>     
-        </tr>
-    </table>
+                <tr>
+                    {% for order in orderData %}
+                        <tr>
+                            <td>{{ order.id }}</td>
+                            <td>{{ order.time }}</td>
+                            <td>{{ order.getMenuItemsAmount }}</td>
+                            <td><a href="{% url 'orderdetails' order.id %}">Details</a></td>
+                            <td><a href="{% url 'orderdelete' order.id %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tr>
+            </table>
+            <p><a href="{% url 'ordercreate' %}"><button class='btn'>Add New Order</button></a></p>
+        </div>
+
+        <div class="flex-col">
+            <table>
+                <tr>
+                    <th>Daily</th>
+                    <th>Monthly</th>
+                    <th>Yearly</th>
+                    <th>Total</th>
+                </tr>
+                <tr>
+                    <td>{{ todayTotal }}</td>
+                    <td>{{ monthTotal }}</td>
+                    <td>{{ yearTotal }}</td>
+                    <td>{{ total }}</td>     
+                </tr>
+            </table>
+        </div>
+    </div> 
 {% endblock %}

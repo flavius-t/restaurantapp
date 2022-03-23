@@ -1,12 +1,14 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-    <div class="header">
+<div class="container-flex">
+    <div class="flex-col">
         <h2>Purchase made on {{ order.time }}</h2>
+        <ul>
+            {% for menuItem in order.item.all %}
+                <li>{{ menuItem.name }}: ${{ menuItem.cost }}</li>
+            {% endfor %}
+        </ul>
     </div>
-    <ul>
-        {% for menuItem in order.item.all %}
-            <li>{{ menuItem.name }}: ${{ menuItem.cost }}</li>
-        {% endfor %}
-    </ul>
+</div>
 {% endblock %}

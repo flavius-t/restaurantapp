@@ -4,27 +4,28 @@
 {% endblock %}
 
 {% block content %}
-    <div class="header">
-        <h1>MenuItem List</h1>
-    </div>
-    
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Cost</th>
-            <th></th>
-            <th></th>
-        </tr>
-        <tr>
-            {% for menuItem in menuItemData %}
+    <div class="container-flex">
+        <div class="flex-col">
+            <h1>MenuItem List</h1>
+            <table>
                 <tr>
-                    <td>{{ menuItem.name }}</td>
-                    <td>{{ menuItem.cost }}</td>
-                    <td><a href="{% url 'menuitemupdate' menuItem.name %}">Update</a></td>
-                    <td><a href="{% url 'menuitemdelete' menuItem.name %}">Delete</a></td>
+                    <th>Name</th>
+                    <th>Cost</th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-        </tr>
-    </table>
-    <p><a href="{% url 'menuitemcreate' %}"><button class='btn'>Add New Menu Item</button></a></p>
+                <tr>
+                    {% for menuItem in menuItemData %}
+                        <tr>
+                            <td>{{ menuItem.name }}</td>
+                            <td>{{ menuItem.cost }}</td>
+                            <td><a href="{% url 'menuitemupdate' menuItem.name %}">Update</a></td>
+                            <td><a href="{% url 'menuitemdelete' menuItem.name %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tr>
+            </table>
+            <p><a href="{% url 'menuitemcreate' %}"><button class='btn'>Add New Menu Item</button></a></p>
+        </div>
+    </div>
 {% endblock %}

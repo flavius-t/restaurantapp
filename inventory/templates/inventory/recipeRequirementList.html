@@ -4,43 +4,40 @@
 {% endblock %}
 
 {% block content %}
-    <div class="header">
-        <h1>RecipeRequirement List</h1>
-    </div>
-
-    <form method='GET'>
-        <div class="recipe-dropdown">
-            {{ form.as_p }}
-            <select name='menuItems' id='menuItems'>
-                <option value="0">Choose a MenuItem</option>
-                {% for item in menuItemData %}
-                    <option value='{{ item.name }}'>{{ item.name }}</option>
-                {% endfor %}
-            </select>
-            <input type='submit' value='Submit' class="input-btn">
-        </div> 
-    </form>
-
-    <table class="recipe-table">
-        <tr>
-            <td>Ingredient</td>
-            <td>Quantity</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            {% for item in recipeData %}
+    <div class="container-flex">
+        <div class="flex-col">
+            <h1>RecipeRequirement List</h1>
+            <form method='GET'>
+                <div class="recipe-dropdown">
+                    {{ form.as_p }}
+                    <select name='menuItems' id='menuItems'>
+                        <option value="0">Choose a MenuItem</option>
+                        {% for item in menuItemData %}
+                            <option value='{{ item.name }}'>{{ item.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type='submit' value='Submit' class="input-btn">
+                </div> 
+            </form>
+            <table class="recipe-table">
                 <tr>
-                    <td><p>{{ item.ingredient_id }}</p></td>
-                    <td><p>{{ item.quantity }}</p></td>
-                    <td><a href="{% url 'recipeupdate' item.id %}">Update</a></td>
-                    <td><a href="{% url 'recipedelete' item.id %}">Delete</a></td>
+                    <td>Ingredient</td>
+                    <td>Quantity</td>
+                    <td></td>
+                    <td></td>
                 </tr>
-            {% endfor %}
-        </tr>
-    </table>
-
-    <div class="recipe-dropdown">
-        <a href="{% url 'recipecreate' %}"><button class='btn'>New Recipe Requirement</button></a>
+                <tr>
+                    {% for item in recipeData %}
+                        <tr>
+                            <td><p>{{ item.ingredient_id }}</p></td>
+                            <td><p>{{ item.quantity }}</p></td>
+                            <td><a href="{% url 'recipeupdate' item.id %}">Update</a></td>
+                            <td><a href="{% url 'recipedelete' item.id %}">Delete</a></td>
+                        </tr>
+                    {% endfor %}
+                </tr>
+            </table>
+            <a href="{% url 'recipecreate' %}"><button class='btn'>New Recipe Requirement</button></a>
+        </div>
     </div>
 {% endblock %}

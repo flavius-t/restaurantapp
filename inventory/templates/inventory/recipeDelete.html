@@ -4,11 +4,15 @@
 {% endblock %}
 
 {% block content %}
-    <div class="header"><h2>Delete Recipe Requirement: {{ reciperequirement.id }}</h2></div>
-    <form method="POST" class="input-form">
-        {% csrf_token %}
-        <p>Are you sure you wish to delete this Recipe Requirement?</p>
-        <input class="input-btn" type="submit" value="Confirm"/>
-    </form>
-    <p><a href="{% url 'recipelist' %}"><button class="input-btn">Cancel</button></a></p>
+    <div class="container-flex">
+        <div class="flex-col">
+            <h2>Delete Recipe Requirement: {{ reciperequirement.id }}</h2>
+            <form method="POST" class="input-form">
+                {% csrf_token %}
+                <p>Are you sure you wish to delete this Recipe Requirement?</p>
+                <input class="input-btn" type="submit" value="Confirm"/>
+            </form>
+            <p><a href="{% url 'recipelist' %}"><button class="input-btn">Cancel</button></a></p>
+        </div>
+    </div>
 {% endblock %}

@@ -8,27 +8,36 @@
         <link rel="stylesheet" href="{% static 'inventory/style.css' %}" type='text/css'>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Indie Flower">
         <link rel="shortcut icon" type="image/png" href="{% static 'inventory/images/favicon.ico' %}"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
         <title>MyRestaurant</title>
         {% block head %}
         {% endblock %}
     </head>
     <body>
-        <nav>
-            <div class="nav-img">
-                <a href="{% url 'home' %}"><img src="{% static 'inventory/images/favicon-small.png' %}"/></a>
-            </div>
-            <a href="{% url 'home' %}" class=logo>MyRestaurant</a>
-            <ul>
-                <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="{% url 'ingredientlist' %}">Ingredients</a></li>
-                <li><a href="{% url 'menuitemlist' %}">Menu Items</a></li>
-                <li><a href="{% url 'orderlist' %}">Orders</a></li>
-                <li><a href="{% url 'recipelist' %}">Recipes</a></li>
-                <li><a href="{% url 'edituser' %}">Edit Profile</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            </ul>
-        </nav>
-        {% block content %}
-        {% endblock %}
+        <header>
+            <nav>
+                <ul class="nav-ul">
+                    <li class="nav-logo"><a href="{% url 'home' %}">MyRestaurant</a></li>
+                    <li class="nav-li"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-li"><a href="{% url 'ingredientlist' %}">Ingredients</a></li>
+                    <li class="nav-li"><a href="{% url 'menuitemlist' %}">Menu Items</a></li>
+                    <li class="nav-li"><a href="{% url 'orderlist' %}">Orders</a></li>
+                    <li class="nav-li"><a href="{% url 'recipelist' %}">Recipes</a></li>
+                    <li class="nav-li button"><a href="{% url 'edituser' %}">Edit Profile</a></li>
+                    <li class="nav-li button second"><a href="{% url 'logout' %}">Logout</a></li>
+                    <li class="nav-burger"><a href="#"><i class="fas fa-bars"></i></a></li>
+                    <!-- <li class="nav-img">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'inventory/images/favicon-small.png' %}"/>
+                        </a>
+                    </li> -->
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <script src="{% static 'inventory/navScripts.js' %}"></script> 
     </body>
 </html>
