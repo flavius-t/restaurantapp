@@ -1,6 +1,5 @@
 * {
     box-sizing: border-box;
-    border: 1px solid red;
     padding: 0;
     margin: 0;
 }
@@ -12,6 +11,10 @@ body {
 a {
     text-decoration: none;
     color: white;
+}
+
+a:hover {
+    text-decoration: none;
 }
 
 p {
@@ -34,13 +37,12 @@ button:hover {
 }
 
 .container-flex {
-    width: 95%;
+    width: 90%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid red;
-    margin: 0 auto;
+    margin: 2% auto;
 }
 
 .container-flex.single-col {
@@ -49,6 +51,46 @@ button:hover {
 
 h1 {
     text-align: center;
+}
+
+.recipe-dropdown select {
+    background-color: dodgerblue;
+    border: none;
+    color: white;
+    padding: 10px;
+}
+
+.recipe-dropdown select:hover {
+    opacity: 0.7;
+}
+
+.dropdown-item:hover {
+    opacity: 0.7;
+}
+
+.sign-up {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 10px;
+    background: rgba(30, 44, 241, 0.75);
+    padding: 2% 0;
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    width: 80%;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
 }
 
 /* ************* */
@@ -63,12 +105,11 @@ nav {
 
 .nav-ul {
     list-style: none;
-    width: 95%;
+    width: 90%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid red;
     padding-top: 20px;
     padding-bottom: 20px;
     margin: auto;
@@ -155,6 +196,41 @@ tr:nth-child(odd) {
     opacity: 0.75;
 }
 
+/* Forms layout */
+.input-list {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    column-gap: 5px;
+}
+
+.input-list p {
+    padding: 10px;
+    font-size: 20px;
+}
+
+.input-list input {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+input.input-btn {
+    background-color: rgb(248, 7, 7);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    text-decoration: none;
+}
+
+input.input-btn:hover {
+    opacity: 0.75;
+    cursor: pointer
+}
+
 /* ******************* */
 /* Large Screen Layout */
 /* ******************* */
@@ -162,6 +238,10 @@ tr:nth-child(odd) {
 @media (min-width: 850px) {
     .container-flex {
         justify-content: space-between;
+    }
+
+    #login-form {
+        justify-content: center;
     }
     
     .nav-ul {

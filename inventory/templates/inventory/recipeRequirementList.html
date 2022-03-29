@@ -6,19 +6,19 @@
 {% block content %}
     <div class="container-flex">
         <div class="flex-col">
+            
             <h1>RecipeRequirement List</h1>
             <form method='GET'>
-                <div class="recipe-dropdown">
-                    {{ form.as_p }}
-                    <select name='menuItems' id='menuItems'>
-                        <option value="0">Choose a MenuItem</option>
-                        {% for item in menuItemData %}
-                            <option value='{{ item.name }}'>{{ item.name }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type='submit' value='Submit' class="input-btn">
-                </div> 
+                {{ form.as_p }}
+                <select name='menuItems' id='menuItems'>
+                    <option value="0">Choose a MenuItem</option>
+                    {% for item in menuItemData %}
+                        <option value='{{ item.name }}'>{{ item.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type='submit' value='Submit' class="input-btn">
             </form>
+
             <table class="recipe-table">
                 <tr>
                     <td>Ingredient</td>

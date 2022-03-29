@@ -1,0 +1,36 @@
+<head>
+    {% load static %}
+    <link href="{% static 'inventory/style.css' %}" rel='stylesheet' type='text/css'/>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-ul">
+                <li class="nav-logo"><a href="{% url 'home' %}">MyRestaurant</a></li>
+                <li class="nav-li button"><a href="{% url 'login' %}">Sign Up</a></li>
+                <li class="nav-burger"><a href="#"><i class="fas fa-bars"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container-flex" id="login-form">
+        <div class="sign-up">
+            <h2>Sign Up</h2>
+            <form class="input-form" method="POST" action="." id="sign-up">
+                {% csrf_token %}
+                <div class="input-group">
+                    {{form.username}}
+                </div>
+                <div class="input-group">
+                    {{form.email}}
+                </div>
+                <div class="input-group">
+                    {{form.password1}}
+                </div>
+                <div class="input-group">
+                    {{form.password2}}
+                </div>
+                <input class="input-btn" type="submit" value="Signup"/>
+            </form>
+        </div>
+    </div>
+</body>

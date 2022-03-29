@@ -5,11 +5,11 @@
         <div class="flex-col">
             <h2>Create Menu Item</h2>
             <form method="POST" class="input-form">
-                <div>
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input class="input-btn" type="submit" value="Submit" />
-                </div>
+                <ul class="input-list">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="input-btn" type="submit" value="Submit" />
+                </ul>
             </form>
         </div>
     </div>

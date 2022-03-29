@@ -3,7 +3,7 @@ from django.views.generic.detail import DetailView
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm
+from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm, UserSignUpForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -278,3 +278,22 @@ class UserEditView(LoginRequiredMixin, UpdateView):
 class OrderDetailView(LoginRequiredMixin, DetailView):
     model = Order
     template_name = "inventory/orderDetails.html"
+
+def signup(request):
+    form = UserSignUpForm(request.POST)
+    if form.is_valid():
+        username = form.cleaned_data.get("username")
+        password = form.cleaned_data.get("password1")
+        form.save()
+        new_user = authenticate(username=username, password=password)
+        if new_user is not None:
+            login(request, new_user)
+            return redirect('home')
+    else:
+        form = UserSignUpForm()
+    
+    context = {
+        "form": form
+    }
+
+    return render(request, "registration/signup.html", context)

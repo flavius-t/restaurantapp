@@ -1,15 +1,28 @@
 <head>
     {% load static %}
-    <link href="{% static 'inventory/authenticate.css' %}" rel='stylesheet' type='text/css'/>
+    <link href="{% static 'inventory/style.css' %}" rel='stylesheet' type='text/css'/>
 </head>
 
 <body>
-    <h2>Please login</h2>
-    <form class="login" method="POST">
-        <div>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Login"/>
+    <header>
+        <nav>
+            <ul class="nav-ul">
+                <li class="nav-logo"><a href="{% url 'home' %}">MyRestaurant</a></li>
+                <li class="nav-li button"><a href="{% url 'signup' %}">Sign Up</a></li>
+                <li class="nav-burger"><a href="#"><i class="fas fa-bars"></i></a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container-flex" id="login-form">
+        <div class="flex-col">
+            <h2>Please login</h2>
+            <form class="input-form" method="POST">
+                <div>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="input-btn" type="submit" value="Login"/>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </body>
