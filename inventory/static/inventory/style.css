@@ -69,7 +69,8 @@ h1 {
 }
 
 .sign-up {
-    width: 30%;
+    margin: 2%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -77,14 +78,15 @@ h1 {
     row-gap: 10px;
     background: rgba(30, 44, 241, 0.75);
     border-radius: 10px;
-    padding: 2% 0;
+    padding: 5% 0;
     color: white;
 }
 
 .input-form {
+    margin: 20px 0;
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: 30px;
     width: 80%;
 }
 
@@ -277,5 +279,9 @@ input.input-btn:hover {
     .nav-li.button.second {
         border-bottom: 2px solid white;
         margin-right: 0;
+    }
+
+    .sign-up {
+        width: 50%;
     }
 }
