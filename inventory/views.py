@@ -241,13 +241,10 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("recipelist")
 
 def UserLogin(request):
-    # template_name = "registration/login.html"
     form = UserLoginForm(request.POST)
     
     if request.method == 'POST':
         if form.is_valid:
-            # username = request.POST['username']
-            # password = request.POST['password']
             username = form.cleaned_data.get['username']
             password = form.cleaned_data.get['password']
     
@@ -264,7 +261,7 @@ def UserLogin(request):
     context = {
         "form": form
     }
-    
+
     return render(request, "registration/login.html", context)
 
 def LogoutView(request):
