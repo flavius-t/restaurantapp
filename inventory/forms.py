@@ -48,15 +48,32 @@ class RecipeUpdateForm(forms.ModelForm):
         model = RecipeRequirement
         fields = ('ingredient', 'quantity')
 
-class EditUserForm(UserChangeForm):
-    email = forms.EmailField(widget=forms.EmailInput())
-    first_name = forms.CharField(max_length=100, widget=forms.TextInput())
-    last_name = forms.CharField(max_length=100, widget=forms.TextInput())
-    password = None
-    
+class EditUserForm(UserChangeForm):    
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name')
+        
+    password = None
+
+    def __init__(self, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.fields['email'].widget.attrs.update({ 
+            'class': 'form-input', 
+            'id': 'form-input',
+            'placeholder':'Email',   
+            })
+        self.fields['first_name'].widget.attrs.update({ 
+            'class': 'form-input', 
+            'id': 'form-input',
+            'placeholder':'First Name',
+            })
+        self.fields['last_name'].widget.attrs.update({ 
+            'class': 'form-input', 
+            'id': 'form-input',
+            'placeholder':'Last Name',
+            })
+        
+        
 
 class UserSignUpForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
