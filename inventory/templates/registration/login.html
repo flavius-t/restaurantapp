@@ -13,16 +13,17 @@
             </ul>
         </nav>
     </header>
-    <div class="container-flex" id="login-form">
-        <div class="flex-col">
-            <h2>Please login</h2>
-            <form class="input-form" method="POST">
-                <div>
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input class="input-btn" type="submit" value="Login"/>
-                </div>
-            </form>
-        </div>
+    <div class="sign-up">
+        <h2>Please login</h2>
+        <form class="input-form" method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+                {{ form.username }}
+            </div>
+            <div class="input-group">
+                {{ form.password }}
+            </div>
+            <input class="input-btn" type="submit" value="Login"/>
+        </form>
     </div>
 </body>

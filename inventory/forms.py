@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 from django.forms.widgets import DateTimeInput
 from .models import Ingredient, Order, MenuItem, RecipeRequirement
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 class IngredientCreateForm(forms.ModelForm):
     class Meta:
@@ -106,3 +106,27 @@ class UserSignUpForm(UserCreationForm):
     class meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
+
+class UserLoginForm(AuthenticationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super(UserLoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({ 
+            'class': 'form-input', 
+            'required':'', 
+            'name':'username', 
+            'id':'username', 
+            'type':'text', 
+            'placeholder':'Username',  
+            })
+        self.fields['password'].widget.attrs.update({ 
+            'class': 'form-input', 
+            'required':'', 
+            'name':'password', 
+            'id':'password', 
+            'type':'password', 
+            'placeholder':'Password', 
+            }) 

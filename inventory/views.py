@@ -3,12 +3,12 @@ from django.views.generic.detail import DetailView
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm, UserSignUpForm
+from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm, UserSignUpForm, UserLoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.views import PasswordChangeView, LoginView
 from django.contrib.auth.forms import PasswordChangeForm
 from datetime import date
 from django.utils.timezone import make_aware
@@ -240,22 +240,32 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "inventory/recipeDelete.html"
     success_url = reverse_lazy("recipelist")
 
-def LoginView(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+def UserLogin(request):
+    # template_name = "registration/login.html"
+    form = UserLoginForm(request.POST)
     
-        # Check if there is user object matching username and password
-        user = authenticate(request, username=username, password=password)
+    if request.method == 'POST':
+        if form.is_valid:
+            # username = request.POST['username']
+            # password = request.POST['password']
+            username = form.cleaned_data.get['username']
+            password = form.cleaned_data.get['password']
+    
+            # Check if there is user object matching username and password
+            user = authenticate(request, username=username, password=password)
 
-        # Check if user exists and is authenticated
-        if user is not None:
-            # Log user in
-            login(request, user)
-            # Redirect to home page
-            return redirect('home')
+            # Check if user exists and is authenticated
+            if user is not None:
+                # Log user in
+                login(request, user)
+                # Redirect to home page
+                return redirect('home')
 
-    return render(request, 'registration/login.html')
+    context = {
+        "form": form
+    }
+    
+    return render(request, "registration/login.html", context)
 
 def LogoutView(request):
     logout(request)
