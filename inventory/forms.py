@@ -108,25 +108,24 @@ class UserSignUpForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 class UserLoginForm(AuthenticationForm):
-    class Meta:
-        model = User
-        fields = ['username', 'password']
+    # class Meta:
+    #     widgets = {
+    #         'username': forms.TextInput(attrs={'class': 'form-input'}),
+    #         'password': forms.PasswordInput(attrs={'class': 'form-input'})
+    #     }
 
     def __init__(self, *args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({ 
             'class': 'form-input', 
-            'required':'', 
-            'name':'username', 
-            'id':'username', 
-            'type':'text', 
-            'placeholder':'Username',  
+            'id': 'form-input',
+            'placeholder':'Username',   
             })
         self.fields['password'].widget.attrs.update({ 
             'class': 'form-input', 
-            'required':'', 
-            'name':'password', 
-            'id':'password', 
-            'type':'password', 
-            'placeholder':'Password', 
+            'id': 'form-input',
+            'placeholder':'Password',
             }) 
+    
+    # username = forms.CharField(max_length=22)
+    # password = forms.PasswordInput()

@@ -187,6 +187,10 @@ tr:nth-child(odd) {
     border: none;
 }
 
+#form-input {
+    color: black;
+}
+
 .input-list {
     display: flex;
     align-items: flex-start;

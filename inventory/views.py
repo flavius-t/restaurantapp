@@ -240,29 +240,30 @@ class RecipeDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "inventory/recipeDelete.html"
     success_url = reverse_lazy("recipelist")
 
-def UserLogin(request):
-    form = UserLoginForm(request.POST)
+# class UserLoginView(LoginView):
+#     template_name = 'registration/login.html'
+    # form = UserLoginForm(request.POST)
     
-    if request.method == 'POST':
-        if form.is_valid:
-            username = form.cleaned_data.get['username']
-            password = form.cleaned_data.get['password']
+    # if request.method == 'POST':
+    #     if form.is_valid:
+    #         username = form.get['username']
+    #         password = form.get['password']
     
-            # Check if there is user object matching username and password
-            user = authenticate(request, username=username, password=password)
+    #         # Check if there is user object matching username and password
+    #         user = authenticate(request, username=username, password=password)
 
-            # Check if user exists and is authenticated
-            if user is not None:
-                # Log user in
-                login(request, user)
-                # Redirect to home page
-                return redirect('home')
+    #         # Check if user exists and is authenticated
+    #         if user is not None:
+    #             # Log user in
+    #             login(request, user)
+    #             # Redirect to home page
+    #             return redirect('home')
 
-    context = {
-        "form": form
-    }
+    # context = {
+    #     "form": form
+    # }
 
-    return render(request, "registration/login.html", context)
+    # return render(request, "registration/login.html", context)
 
 def LogoutView(request):
     logout(request)

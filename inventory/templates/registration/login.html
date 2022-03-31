@@ -5,12 +5,12 @@
         <h2>Please login</h2>
         <form class="input-form" method="POST">
             {% csrf_token %}
-            <div class="input-group">
+            <p class="input-group">
                 {{ form.username }}
-            </div>
-            <div class="input-group">
+            </p>
+            <p class="input-group">
                 {{ form.password }}
-            </div>
+            </p>
             <input class="input-btn" type="submit" value="Login"/>
         </form>
         <a href="{% url 'signup' %}">Sign Up</a>

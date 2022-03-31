@@ -1,10 +1,13 @@
 from django.urls import path, include
 
+from inventory.forms import UserLoginForm
+from django.contrib.auth.views import LoginView
+
 from . import views
 
 urlpatterns = [
     path('', views.home, name="home"),
-    # path('home/', views.home, name="home"),
+    path('home/', views.home, name="home"),
     path('ingredients/', views.IngredientList, name='ingredientlist'),
     path('menuitems/', views.MenuItemList, name='menuitemlist'),
     path('orders/', views.OrderList, name='orderlist'),
@@ -20,7 +23,7 @@ urlpatterns = [
     path('order/delete/<pk>/', views.OrderDeleteView.as_view(), name='orderdelete'),
     path('menuitems/delete/<pk>/', views.MenuItemDeleteView.as_view(), name='menuitemdelete'),
     path('recipes/delete/<pk>/', views.RecipeDeleteView.as_view(), name='recipedelete'),
-    path('login/', views.UserLogin, name='login'),
+    path('login/', LoginView.as_view(authentication_form=UserLoginForm), name='login'),
     path('logout/', views.LogoutView, name='logout'),
     path('password/', views.PasswordsChangeView.as_view(), name='passwordchange'),
     path('editUser/', views.UserEditView.as_view(), name='edituser'),
