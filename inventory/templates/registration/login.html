@@ -1,18 +1,6 @@
-<head>
-    {% load static %}
-    <link href="{% static 'inventory/style.css' %}" rel='stylesheet' type='text/css'/>
-</head>
+{% extends 'inventory/base.html' %}
 
-<body>
-    <header>
-        <nav>
-            <ul class="nav-ul">
-                <li class="nav-logo"><a href="{% url 'home' %}">MyRestaurant</a></li>
-                <li class="nav-li button"><a href="{% url 'signup' %}">Sign Up</a></li>
-                <li class="nav-burger"><a href="#"><i class="fas fa-bars"></i></a></li>
-            </ul>
-        </nav>
-    </header>
+{% block content %}
     <div class="sign-up">
         <h2>Please login</h2>
         <form class="input-form" method="POST">
@@ -25,5 +13,7 @@
             </div>
             <input class="input-btn" type="submit" value="Login"/>
         </form>
+        <a href="{% url 'signup' %}">Sign Up</a>
+        <a href="#">Forgot Password</a>
     </div>
-</body>
+{% endblock %}
