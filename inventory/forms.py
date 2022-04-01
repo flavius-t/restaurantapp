@@ -9,6 +9,12 @@ class IngredientCreateForm(forms.ModelForm):
     class Meta:
         model = Ingredient
         fields = ('name', 'quantity', 'unit', 'cost')
+        widgets = ({
+            'name': forms.TextInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Name'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Quantity'}),
+            'unit': forms.TextInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Unit'}),
+            'cost': forms.NumberInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Cost'}),
+        })
 
 class MenuItemCreateForm(forms.ModelForm):
     class Meta:

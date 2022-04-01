@@ -3,14 +3,12 @@
 {% block content %}
 
 <div class="container-flex">
-    <div class="flex-col">
+    <div class="sign-up">
         <h2>Create Ingredient</h2>
-        <form method="POST">
-            <div class="input-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input class="input-btn" type="submit" value="Submit" />
-            </div>
+        <form class="input-form" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="input-btn" type="submit" value="Submit" />
         </form>
     </div>
 </div>
