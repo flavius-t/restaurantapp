@@ -1,17 +1,6 @@
-<head>
-    {% load static %}
-    <link href="{% static 'inventory/style.css' %}" rel='stylesheet' type='text/css'/>
-</head>
-<body>
-    <header>
-        <nav>
-            <ul class="nav-ul">
-                <li class="nav-logo"><a href="{% url 'home' %}">MyRestaurant</a></li>
-                <li class="nav-li button"><a href="{% url 'login' %}">Sign Up</a></li>
-                <li class="nav-burger"><a href="#"><i class="fas fa-bars"></i></a></li>
-            </ul>
-        </nav>
-    </header>
+{% extends 'inventory/base.html' %}
+
+{% block content %}
     <div class="container-flex" id="login-form">
         <div class="sign-up">
             <h2>Sign Up</h2>
@@ -33,4 +22,4 @@
             </form>
         </div>
     </div>
-</body>
+{% endblock %}
