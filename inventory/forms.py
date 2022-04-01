@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 from django.forms.widgets import DateTimeInput
 from .models import Ingredient, Order, MenuItem, RecipeRequirement
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 
 class IngredientCreateForm(forms.ModelForm):
     class Meta:
@@ -52,7 +52,7 @@ class EditUserForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name')
-        
+
     password = None
 
     def __init__(self, *args, **kwargs):
@@ -72,7 +72,6 @@ class EditUserForm(UserChangeForm):
             'id': 'form-input',
             'placeholder':'Last Name',
             })
-        
         
 
 class UserSignUpForm(UserCreationForm):
@@ -146,3 +145,29 @@ class UserLoginForm(AuthenticationForm):
     
     # username = forms.CharField(max_length=22)
     # password = forms.PasswordInput()
+
+# subclass PasswordChangeForm to enable custom CSS form
+class ChangePassword(PasswordChangeForm):
+    class Meta:
+        model = User
+        fields = ['old_password', 'new_password1', 'new_password2']
+    
+    def __init__(self, *args, **kwargs):
+        super(ChangePassword, self).__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({
+            'class': 'form-input',
+            'id': 'form-input',
+            'placeholder': 'Old Password'
+        })
+        self.fields['new_password1'].widget.attrs.update({
+            'class': 'form-input',
+            'id': 'form-input',
+            'placeholder': 'New Password'
+        })
+        self.fields['new_password2'].widget.attrs.update({
+            'class': 'form-input',
+            'id': 'form-input',
+            'placeholder': 'Confirm New Password'
+        })
+        
+    

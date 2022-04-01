@@ -3,13 +3,12 @@ from django.views.generic.detail import DetailView
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm, UserSignUpForm, UserLoginForm
+from .forms import ChangePassword, EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm, UserSignUpForm, UserLoginForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView, LoginView
-from django.contrib.auth.forms import PasswordChangeForm
 from datetime import date
 from django.utils.timezone import make_aware
 import datetime
@@ -270,7 +269,7 @@ def LogoutView(request):
     return redirect('home')
 
 class PasswordsChangeView(LoginRequiredMixin, PasswordChangeView):
-    form_class = PasswordChangeForm
+    form_class = ChangePassword
     success_url = reverse_lazy('home')
     template_name = "registration/changePassword.html"
 
