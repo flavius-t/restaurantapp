@@ -5,14 +5,14 @@
 
 {% block content %}
     <div class="container-flex">
-        <div class="flex-col">
+        <div class="sign-up">
             <h2>Update Order: #{{ order.id }}</h2>
             <form method="POST" class="input-form">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <input class="input-btn" type="submit" value="Save"/>
             </form>
-            <p><a href="{% url 'orderlist' %}"><button class="btn">Cancel</button></a></p>
+            <a href="{% url 'orderlist' %}">Cancel</a>
         </div>
     </div>
 {% endblock %}

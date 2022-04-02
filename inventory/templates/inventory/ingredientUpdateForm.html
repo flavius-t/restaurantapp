@@ -2,31 +2,14 @@
 
 {% block content %}
     <div class="container-flex">
-        <div class="flex-col">
+        <div class="sign-up">
             <h2>Update Ingredient: {{ ingredient.name }}</h2>
-            <form method="POST">
-            <div class="btn-row">
+            <form class='input-form' method="POST">
                 {% csrf_token %} 
                 {{ form.as_p }}
                 <input class="input-btn" type="submit" value="Save"/>
-                <a href=""><button class="btn">Cancel</button></a>
-            </div>
             </form>
+            <a href="{% url 'ingredientlist' %}">Cancel</a>
         </div>
     </div>
 {% endblock %}
-
-<!-- <div class="header">
-    <h2>Update Ingredient: {{ ingredient.name }}</h2>
-</div>
-<form method="POST" action="">
-    <div class="btn-row">
-        {% csrf_token %} 
-        <p><label for="ingredient_name">Name:</label>
-        <input id="ingredient_name" type="text" name="name" maxlength="100" required></p>
-        <p><label for="ingredient_cost">Cost:</label>
-        <input id="ingredient_cost" type="text" name="cost" maxlength="100" required></p>
-        <input class="input-btn" type="submit" value="Save"/>
-        <a href=""><button class="btn">Cancel</button></a>
-    </div>
-</form> -->
