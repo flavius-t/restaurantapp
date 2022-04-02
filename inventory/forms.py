@@ -42,6 +42,11 @@ class RecipeCreateForm(forms.ModelForm):
     class Meta:
         model = RecipeRequirement
         fields = ('item', 'ingredient', 'quantity')
+        widgets = ({
+            'item': forms.Select(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Menu Item Name'}),
+            'ingredient': forms.Select(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Required Ingredient'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Quantity'})
+        })
 
 class IngredientUpdateForm(forms.ModelForm):
     class Meta:
