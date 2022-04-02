@@ -52,11 +52,21 @@ class IngredientUpdateForm(forms.ModelForm):
     class Meta:
         model = Ingredient
         fields = ('name', 'quantity', 'unit', 'cost')
+        widgets = ({
+            'name': forms.TextInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Menu Item Name'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Quantity'}),
+            'unit': forms.TextInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Units'}),
+            'cost': forms.NumberInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Cost'}),
+        })
 
 class MenuItemUpdateForm(forms.ModelForm):
     class Meta:
         model = MenuItem
         fields = ('name', 'cost')
+        widgets = ({
+            'name': forms.TextInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Menu Item Name'}),
+            'cost': forms.NumberInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Cost'}),
+        })
 
 
 class RecipeUpdateForm(forms.ModelForm):

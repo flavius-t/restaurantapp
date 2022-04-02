@@ -1,22 +1,15 @@
 {% extends 'inventory/base.html' %}
 
-{% block head %}
-{% endblock %}
-
 {% block content %}
 <div class="container-flex">
-    <div class="flex-col">
-        <h2>Update Menu Item: {{ menuitem.name }}</h2>
-        <div class="submit-form">
-            <form method="POST">
-                <div class="btn-row">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input class="input-btn" type="submit" value="Save"/>
-                    <a href="{% url 'menuitemlist' %}"><button class="btn">Cancel</button></a>
-                </div>
-            </form>
-        </div>
+    <div class="sign-up">
+        <h1>Update Menu Item: {{ menuitem.name }}</h1>
+        <form class="input-form" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="input-btn" type="submit" value="Save"/>
+        </form>
+        <a href="{% url 'menuitemlist' %}">Cancel</a>
     </div>
 </div>
 {% endblock %}
