@@ -8,14 +8,14 @@
         <div class="sign-up">
             <h1>RecipeRequirement List</h1>
             <form class='input-form' method='GET'>
-                {{ form.as_p }}
+                <!-- {{ form.as_p }} -->
                 <select class="form-input" id='form-input' name='menuItems'>
                     <option value="0">Choose a MenuItem</option>
                     {% for item in menuItemData %}
                         <option value='{{ item.name }}'>{{ item.name }}</option>
                     {% endfor %}
                 </select>
-                <input type='submit' value='View' class="input-btn">
+                <input type='submit' value='View' class="input-btn" id="recipe-trigger">
             </form>
             <a href="{% url 'recipecreate' %}">New Recipe Requirement</a>
         </div>

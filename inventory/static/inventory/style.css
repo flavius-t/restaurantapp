@@ -225,21 +225,6 @@ input.input-btn:hover {
     cursor: pointer
 }
 
-.recipe-dropdown select {
-    background-color: dodgerblue;
-    border: none;
-    color: white;
-    padding: 10px;
-}
-
-.recipe-dropdown select:hover {
-    opacity: 0.7;
-}
-
-.dropdown-item:hover {
-    opacity: 0.7;
-}
-
 /* ******************* */
 /* Large Screen Layout */
 /* ******************* */
