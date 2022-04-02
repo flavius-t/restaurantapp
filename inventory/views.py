@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import PasswordChangeView, LoginView
+from django.contrib.auth.views import PasswordChangeView
 from datetime import date
 from django.utils.timezone import make_aware
 import datetime
@@ -64,24 +64,26 @@ def OrderList(request):
     print("Today's Date: " + str(todayDate))
     print(todayDate.day)
     yearStart = todayDate.year
+    print(todayDate.year)
     # Retrieve list of all MenuItems related to each Order object
     for order in orders:
         items = order.item.all()
         # Calculate revenue from each MenuItem of each Order
         for menuItem in items:
+            # add this item's cost to total revenue
             totalRevenue += menuItem.cost
             # Calculate this year's revenue
             if order.time.year == yearStart:
                 # print("Year Match:" + str(order.time.year))
                 yearRevenue += menuItem.cost
-                # Calculate this month's revenue
+                # Calculate this month's revenue (i.e. month 2 of this year)
                 if order.time.month == todayDate.month:
                     # print("Month Match:" + str(order.time.month))
                     monthRevenue += menuItem.cost
-                    print(order.time.day)
-                    # Calculate today's revenue
+                    print("Order Day:" + str(order.time.day))
+                    # Calculate today's revenue--note, uses UTC date-time.
                     if order.time.day == todayDate.day:
-                        # print("Day Match:" + str(order.time.day))
+                        print("Day Match:" + str(order.time.day))
                         todayRevenue += menuItem.cost
     # 'orderData' is used in orderList.html to refer to 'orders'
     context = {
