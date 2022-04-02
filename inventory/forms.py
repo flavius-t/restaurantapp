@@ -20,6 +20,10 @@ class MenuItemCreateForm(forms.ModelForm):
     class Meta:
         model = MenuItem
         fields = ('name', 'cost')
+        widgets = ({
+            'name': forms.TextInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Menu Item Name'}),
+            'cost': forms.NumberInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Item Cost'}),
+        })
 
 # date-time widget for use with OrderCreateForm
 class DateTimeInput(forms.DateTimeInput):

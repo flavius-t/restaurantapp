@@ -1,15 +1,14 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-
-<div class="container-flex">
-    <div class="sign-up">
-        <h2>Create Ingredient</h2>
-        <form class="input-form" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input class="input-btn" type="submit" value="Submit" />
-        </form>
+    <div class="container-flex">
+        <div class="sign-up">
+            <h2>Create Ingredient</h2>
+            <form class="input-form" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="input-btn" type="submit" value="Submit" />
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}
