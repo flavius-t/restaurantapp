@@ -34,7 +34,8 @@ class OrderCreateForm(forms.ModelForm):
         model = Order
         fields = ('time', 'item')
         widgets = {
-            'time': DateTimeInput(),
+            'time': DateTimeInput(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Date-Time'}),
+            'item': forms.SelectMultiple(attrs={'class': 'form-input', 'id':'form-input', 'placeholder': 'Menu Items'})
         }
 
 class RecipeCreateForm(forms.ModelForm):
