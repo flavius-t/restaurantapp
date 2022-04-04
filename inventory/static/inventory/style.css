@@ -158,6 +158,10 @@ tr:nth-child(odd) {
     opacity: 0.75;
 }
 
+#tz-select {
+    color: black;
+}
+
 /* Forms layout */
 
 .sign-up {

@@ -306,3 +306,21 @@ def signup(request):
     }
 
     return render(request, "registration/signup.html", context)
+
+# Prepare a map of common locations to timezone choices
+common_timezones = {
+    'London': 'Europe/London',
+    'Paris': 'Europe/Paris',
+    'New York': 'America/New_York',
+    'San Francisco': 'US/Pacific',
+}
+
+def set_timezone(request):
+    if request.method == 'POST':
+        try:
+            request.session['django_timezone'] = request.POST['timezone']
+        except:
+            print("TZ not found")
+        return redirect('/')
+    else:
+        return render(request, 'inventory/set_timezone.html', {'timezones': common_timezones})
