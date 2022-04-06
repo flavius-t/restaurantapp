@@ -318,6 +318,7 @@ common_timezones = {
 def set_timezone(request):
     if request.method == 'POST':
         try:
+            # set session timezone, for use by TimezoneMiddleWare
             request.session['django_timezone'] = request.POST['timezone']
         except:
             print("TZ not found")
