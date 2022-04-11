@@ -10,8 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from datetime import date
-from django.utils.timezone import make_aware
-import datetime
+from django.utils import timezone
+from datetime import datetime
+import pytz
 
 # Create your views here.
 
@@ -141,9 +142,17 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         newOrder = Order.objects.create()
         # retrieve list from manytomany field in POST request, add to new Order object
         items = request.POST.getlist('item')
+        
+        # request is passing date as string, need to convert to timezone aware datetime object
+        strtime = request.POST['time']
+        cleaned_time = strtime.replace('T', ' ', 1)
+        tz = pytz.timezone(request.session.get('django_timezone'))
+        newdate = datetime.strptime(cleaned_time, "%Y-%m-%d %H:%M")
+        now_aware = newdate.replace(tzinfo=tz)
+
         for x in items:
             newOrder.item.add(x)
-        newOrder.time = request.POST['time']
+        newOrder.time = now_aware
         newOrder.save()
 
         for menuItem in newOrder.item.all():
@@ -306,3 +315,22 @@ def signup(request):
     }
 
     return render(request, "registration/signup.html", context)
+
+# Prepare a map of common locations to timezone choices
+common_timezones = {
+    'London': 'Europe/London',
+    'Paris': 'Europe/Paris',
+    'New York': 'America/New_York',
+    'San Francisco': 'US/Pacific',
+}
+
+def set_timezone(request):
+    if request.method == 'POST':
+        try:
+            # set session timezone, for use by TimezoneMiddleWare
+            request.session['django_timezone'] = request.POST['timezone']
+        except:
+            print("TZ not found")
+        return redirect('/')
+    else:
+        return render(request, 'inventory/set_timezone.html', {'timezones': common_timezones})
