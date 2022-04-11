@@ -62,12 +62,10 @@ def OrderList(request):
     todayRevenue = 0
     monthRevenue = 0
     todayDate = date.today()
-    print("Today's Date: " + str(todayDate))
-    print(todayDate.day)
     yearStart = todayDate.year
-    print(todayDate.year)
     # Retrieve list of all MenuItems related to each Order object
     for order in orders:
+        print(order.time)
         items = order.item.all()
         # Calculate revenue from each MenuItem of each Order
         for menuItem in items:
@@ -81,10 +79,8 @@ def OrderList(request):
                 if order.time.month == todayDate.month:
                     # print("Month Match:" + str(order.time.month))
                     monthRevenue += menuItem.cost
-                    print("Order Day:" + str(order.time.day))
                     # Calculate today's revenue--note, uses UTC date-time.
                     if order.time.day == todayDate.day:
-                        print("Day Match:" + str(order.time.day))
                         todayRevenue += menuItem.cost
     # 'orderData' is used in orderList.html to refer to 'orders'
     context = {
@@ -148,7 +144,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         cleaned_time = strtime.replace('T', ' ', 1)
         tz = pytz.timezone(request.session.get('django_timezone'))
         newdate = datetime.strptime(cleaned_time, "%Y-%m-%d %H:%M")
-        now_aware = newdate.replace(tzinfo=tz)
+        now_aware = timezone.make_aware(newdate, timezone=tz)
 
         for x in items:
             newOrder.item.add(x)
