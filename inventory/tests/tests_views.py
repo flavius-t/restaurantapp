@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.test import TestCase, Client
 from django.urls import reverse
 from inventory.models import Order, Ingredient, MenuItem
@@ -6,7 +7,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import datetime
 import pytz
-import zoneinfo
+from decimal import Decimal
 
 class TestMenuItemListView(TestCase):
     def setUp(self):
@@ -66,4 +67,35 @@ class TestOrderCreateView(TestCase):
         })
         self.assertEquals(response.status_code, 302)
         print(response.context)
-        
+
+class TestIngredientCreateView(TestCase):
+    def setUp(self):
+        test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
+        test_user1.save()
+        self.client = Client()
+        self.ingredient_create_url = reverse('ingredientcreate')
+
+    def test_POST_adds_new_ingredient(self):
+        ing_name = 'ingredient1'
+        ing_cost = 1.99
+        ing_quant = 10
+        ing_unit = 'g'
+
+        self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        response = self.client.post(self.ingredient_create_url, {
+        'name': ing_name,
+        'cost': ing_cost,
+        'quantity': ing_quant,
+        'unit': ing_unit
+        })
+        # check for redirect after POST
+        self.assertEquals(response.status_code, 302)
+ 
+        new_ingredient = Ingredient.objects.get(name='ingredient1')
+        # check new Ingredient object created
+        self.assertIsNotNone(new_ingredient)
+        # check proper attributes set
+        self.assertEquals(new_ingredient.name, ing_name)
+        self.assertAlmostEquals(new_ingredient.cost, Decimal(ing_cost), 2)
+        self.assertEquals(new_ingredient.quantity, ing_quant)
+        self.assertEquals(new_ingredient.unit, ing_unit)
