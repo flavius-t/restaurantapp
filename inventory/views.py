@@ -9,10 +9,14 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
+from django.contrib import messages
 from datetime import date
 from django.utils import timezone
 from datetime import datetime
 import pytz
+import logging
+
+_logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -134,17 +138,28 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     form_class = OrderCreateForm
     
     def post(self, request, *args, **kwargs):
-        # Create new Order object, fill fields with input from POST request
-        newOrder = Order.objects.create()
-        # retrieve list from manytomany field in POST request, add to new Order object
-        items = request.POST.getlist('item')
-        
+        """
+        Override POST method handling fro this view to allow custom handling of new Order creation.
+        """
         # request is passing date as string, need to convert to timezone aware datetime object
         strtime = request.POST['time']
         cleaned_time = strtime.replace('T', ' ', 1)
-        tz = pytz.timezone(request.session.get('django_timezone'))
-        newdate = datetime.strptime(cleaned_time, "%Y-%m-%d %H:%M")
-        now_aware = timezone.make_aware(newdate, timezone=tz)
+        try:
+            tz_str = request.session.get('django_timezone')
+            tz = pytz.timezone(tz_str)
+            newdate = datetime.strptime(cleaned_time, "%Y-%m-%d %H:%M")
+            now_aware = timezone.make_aware(newdate, timezone=tz)
+        except pytz.exceptions.UnknownTimeZoneError:
+            _logger.error("Failed to create new Order: Unknown timezone: %s. Ensure timezone has been set.", tz_str)
+            messages.error(request, "Failed to create new Order: Ensure timezone has been set.")
+            return redirect('orderlist')
+            
+
+        # retrieve list from manytomany field in POST request, add to new Order object
+        items = request.POST.getlist('item')
+
+        # Create new Order object, fill fields with input from POST request
+        newOrder = Order.objects.create()
 
         for x in items:
             newOrder.item.add(x)
@@ -152,7 +167,6 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         newOrder.save()
 
         for menuItem in newOrder.item.all():
-            print(menuItem.name)
             # Retrieve recipeRequirements corresponding to the MenuItem in the new Order
             recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
                                                     WHERE item_id = %s''', [menuItem.name])

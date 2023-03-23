@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'inventory.middleware.TimezoneMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 ]
 
 ROOT_URLCONF = 'djangodelights.urls'
