@@ -1,3 +1,4 @@
+from django.http import HttpRequest
 from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
@@ -136,44 +137,105 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('orderlist')
     template_name = 'inventory/orderCreateForm.html'
     form_class = OrderCreateForm
-    
-    def post(self, request, *args, **kwargs):
+
+    def __populate_new_order(self, items: list[MenuItem], aware_time: datetime, order: Order):
         """
-        Override POST method handling fro this view to allow custom handling of new Order creation.
+        Helper function to populate new Order object with MenuItem objects from POST request.
+
+        Args:
+            `items` (list): List of MenuItem objects to add to Order.
+            `time` (datetime): timezone-aware datetime object representing time of Order.
         """
-        # request is passing date as string, need to convert to timezone aware datetime object
-        strtime = request.POST['time']
+        for x in items:
+            order.item.add(x)
+        order.time = aware_time
+        order.save()
+
+    def __get_tz_aware_time(self, request: HttpRequest) -> datetime:
+        """
+        Helper function to retrieve timezone-aware datetime object from POST request.
+
+        Args:
+            `request` (HttpRequest): POST request object from OrderCreateView.
+
+        Returns:
+            `datetime`: timezone-aware datetime object representing time of Order.
+        """
+        # request passed as string, needs to be formatted and made timezone-aware
+        strtime = request.POST.get('time')
+        if not strtime:
+            messages.error(request, "Failed to create new Order: Ensure time has been set.")
+            return redirect('orderlist')
+        
         cleaned_time = strtime.replace('T', ' ', 1)
+
         try:
             tz_str = request.session.get('django_timezone')
             tz = pytz.timezone(tz_str)
             newdate = datetime.strptime(cleaned_time, "%Y-%m-%d %H:%M")
             now_aware = timezone.make_aware(newdate, timezone=tz)
         except pytz.exceptions.UnknownTimeZoneError:
-            _logger.error("Failed to create new Order: Unknown timezone: %s. Ensure timezone has been set.", tz_str)
-            messages.error(request, "Failed to create new Order: Ensure timezone has been set.")
-            return redirect('orderlist')
-            
+            messages.error(request, "Failed to create new Order: Unknown timezone. Ensure timezone has been set.")
+            return None
+        except ValueError:
+            messages.error(request, "Failed to create new Order: Invalid time format.")
+            return None
 
-        # retrieve list from manytomany field in POST request, add to new Order object
+        return now_aware
+    
+    def __update_inventory(self, order: Order) -> None:
+        """
+        Helper function to update inventory quantities after new Order is created.
+
+        Args:
+            `order` (Order): Order object that was just created.
+        """
+        items = order.item.all()
+        # Update quantity of each Ingredient related to each MenuItem
+        for menu_item in items:
+            recipe_reqs = RecipeRequirement.objects.filter(item=menu_item)
+            for req in recipe_reqs:
+                ingredient = req.ingredient
+                ingredient.quantity -= req.quantity
+                ingredient.save()
+
+    def __get_menu_items(self, request: HttpRequest) -> list[MenuItem]:
+        """
+        Helper function to retrieve list of MenuItem objects from POST request.
+
+        Args:
+            request (HttpRequest): POST request object from OrderCreateView.
+
+        Returns:
+            list: List of MenuItem objects corresponding to MenuItems in POST request.
+        """
         items = request.POST.getlist('item')
-
+        menuItems = []
+        for item in items:
+            try:
+                menuItem = MenuItem.objects.get(name=item)
+                menuItems.append(menuItem)
+            except MenuItem.DoesNotExist:
+                messages.error(request, "Failed to create new Order: Invalid MenuItem.")
+                return None
+        return menuItems
+    
+    def post(self, request, *args, **kwargs):
+        """
+        Override POST request handling to allow custom handling of new Order creation.
+        """
         # Create new Order object, fill fields with input from POST request
+        aware_time = self.__get_tz_aware_time(request)
+        items = self.__get_menu_items(request)
+        if not (aware_time and items):
+            return redirect('orderlist')
         newOrder = Order.objects.create()
+        self.__populate_new_order(items, aware_time, newOrder)
 
-        for x in items:
-            newOrder.item.add(x)
-        newOrder.time = now_aware
-        newOrder.save()
-
-        for menuItem in newOrder.item.all():
-            # Retrieve recipeRequirements corresponding to the MenuItem in the new Order
-            recipereqs = RecipeRequirement.objects.raw('''SELECT * FROM inventory_reciperequirement
-                                                    WHERE item_id = %s''', [menuItem.name])
-            # Update Ingredient inventory to reflect ingredients used in new Order
-            for item in recipereqs:
-                item.ingredient.quantity -= item.quantity
-                item.ingredient.save()
+        # TODO: handle case where Order is created but inventory update fails;
+        # order should not be created unless inventory update succeeds. Leave
+        # saving order until everything else is done.
+        self.__update_inventory(newOrder)
 
         return redirect('orderlist')
         
