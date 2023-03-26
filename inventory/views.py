@@ -13,6 +13,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 from datetime import date
 from django.utils import timezone
+from django.db import transaction
 from datetime import datetime
 import pytz
 import logging
@@ -131,6 +132,9 @@ class MenuItemCreateView(LoginRequiredMixin, CreateView):
     template_name = 'inventory/menuItemCreateForm.html'
     form_class = MenuItemCreateForm
 
+class InsufficientInventoryError(Exception):
+        pass
+
 class OrderCreateView(LoginRequiredMixin, CreateView):
     model = Order
     context_object_name = 'orders'
@@ -138,7 +142,7 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
     template_name = 'inventory/orderCreateForm.html'
     form_class = OrderCreateForm
 
-    def __populate_new_order(self, items: list[MenuItem], aware_time: datetime, order: Order):
+    def __create_new_order(self, items: list[MenuItem], aware_time: datetime):
         """
         Helper function to populate new Order object with MenuItem objects from POST request.
 
@@ -146,10 +150,12 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
             `items` (list): List of MenuItem objects to add to Order.
             `time` (datetime): timezone-aware datetime object representing time of Order.
         """
-        for x in items:
-            order.item.add(x)
-        order.time = aware_time
-        order.save()
+        with transaction.atomic():
+            order = Order.objects.create()
+            for x in items:
+                order.item.add(x)
+            order.time = aware_time
+            order.save()
 
     def __get_tz_aware_time(self, request: HttpRequest) -> datetime:
         """
@@ -165,8 +171,8 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         strtime = request.POST.get('time')
         if not strtime:
             messages.error(request, "Failed to create new Order: Ensure time has been set.")
-            return redirect('orderlist')
-        
+            return None
+
         cleaned_time = strtime.replace('T', ' ', 1)
 
         try:
@@ -183,21 +189,23 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
 
         return now_aware
     
-    def __update_inventory(self, order: Order) -> None:
+    def __update_inventory(self, recipe_items: list[MenuItem]) -> None:
         """
         Helper function to update inventory quantities after new Order is created.
 
         Args:
             `order` (Order): Order object that was just created.
         """
-        items = order.item.all()
-        # Update quantity of each Ingredient related to each MenuItem
-        for menu_item in items:
-            recipe_reqs = RecipeRequirement.objects.filter(item=menu_item)
-            for req in recipe_reqs:
-                ingredient = req.ingredient
-                ingredient.quantity -= req.quantity
-                ingredient.save()
+        # Update quantity of each Ingredient related to each MenuItem; rollback changes if insufficient inventory
+        with transaction.atomic():
+            for menu_item in recipe_items:
+                recipe_reqs = RecipeRequirement.objects.filter(item=menu_item)
+                for req in recipe_reqs:
+                    ingredient = req.ingredient
+                    if ingredient.quantity < req.quantity:
+                        raise InsufficientInventoryError(f"Insufficient inventory for ingredient '{ingredient}'.")
+                    ingredient.quantity -= req.quantity
+                    ingredient.save()
 
     def __get_menu_items(self, request: HttpRequest) -> list[MenuItem]:
         """
@@ -226,16 +234,17 @@ class OrderCreateView(LoginRequiredMixin, CreateView):
         """
         # Create new Order object, fill fields with input from POST request
         aware_time = self.__get_tz_aware_time(request)
-        items = self.__get_menu_items(request)
-        if not (aware_time and items):
+        menu_items = self.__get_menu_items(request)
+        if not (aware_time and menu_items):
             return redirect('orderlist')
-        newOrder = Order.objects.create()
-        self.__populate_new_order(items, aware_time, newOrder)
 
-        # TODO: handle case where Order is created but inventory update fails;
-        # order should not be created unless inventory update succeeds. Leave
-        # saving order until everything else is done.
-        self.__update_inventory(newOrder)
+        try:
+            self.__update_inventory(menu_items)
+        except InsufficientInventoryError as e:
+            messages.error(request, f"Failed to create new Order due to insufficient inventory: {e}")
+            return redirect('orderlist')
+
+        self.__create_new_order(menu_items, aware_time)
 
         return redirect('orderlist')
         
