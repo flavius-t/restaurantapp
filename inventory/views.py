@@ -4,15 +4,14 @@ from django.views.generic.detail import DetailView
 from .models import Ingredient, MenuItem, RecipeRequirement, Order
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.urls import reverse_lazy
-from .forms import ChangePassword, EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm, UserSignUpForm, UserLoginForm
-from django.contrib.auth.models import User
+from .forms import ChangePassword, EditUserForm, IngredientCreateForm, IngredientUpdateForm, MenuItemCreateForm, MenuItemUpdateForm, OrderCreateForm, RecipeCreateForm, RecipeUpdateForm, UserSignUpForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
-from datetime import date
 from django.utils import timezone
+from django.db.models import Sum
 from django.db import transaction
 from datetime import datetime
 import pytz
@@ -59,43 +58,27 @@ def MenuItemList(request):
 
 @login_required
 def OrderList(request):
-    # SQL query to return list of all Order tuples
-    orders = Order.objects.all()
+    # Retrieve list of all Order objects and their related MenuItems, and annotate with total cost
+    orders = Order.objects.annotate(total_cost=Sum('item__cost'))
 
     # Calculate total revenue
-    totalRevenue = 0
-    yearRevenue = 0
-    todayRevenue = 0
-    monthRevenue = 0
-    todayDate = date.today()
-    yearStart = todayDate.year
-    # Retrieve list of all MenuItems related to each Order object
-    for order in orders:
-        print(order.time)
-        items = order.item.all()
-        # Calculate revenue from each MenuItem of each Order
-        for menuItem in items:
-            # add this item's cost to total revenue
-            totalRevenue += menuItem.cost
-            # Calculate this year's revenue
-            if order.time.year == yearStart:
-                # print("Year Match:" + str(order.time.year))
-                yearRevenue += menuItem.cost
-                # Calculate this month's revenue (i.e. month 2 of this year)
-                if order.time.month == todayDate.month:
-                    # print("Month Match:" + str(order.time.month))
-                    monthRevenue += menuItem.cost
-                    # Calculate today's revenue--note, uses UTC date-time.
-                    if order.time.day == todayDate.day:
-                        todayRevenue += menuItem.cost
+    total_revenue = orders.aggregate(Sum('total_cost'))['total_cost__sum'] or 0
+
+    # Calculate revenue for different time periods
+    local_tz = timezone.get_current_timezone()
+    today_date = timezone.now().astimezone(local_tz).date()
+    year_revenue = orders.filter(time__year=today_date.year).aggregate(Sum('item__cost'))['item__cost__sum'] or 0
+    month_revenue = orders.filter(time__year=today_date.year, time__month=today_date.month).aggregate(Sum('item__cost'))['item__cost__sum'] or 0
+    today_revenue = orders.filter(time__year=today_date.year, time__month=today_date.month, time__day=today_date.day).aggregate(Sum('item__cost'))['item__cost__sum'] or 0
+
     # 'orderData' is used in orderList.html to refer to 'orders'
     context = {
-        'orderData': orders, 
-        'total': totalRevenue, 
-        'yearTotal': yearRevenue,
-        'monthTotal': monthRevenue,
-        'todayTotal': todayRevenue,
-        }
+        'orderData': orders,
+        'total': round(total_revenue, 2),
+        'yearTotal': round(year_revenue, 2),
+        'monthTotal': round(month_revenue, 2),
+        'todayTotal': round(today_revenue, 2),
+    }
     return render(request, 'inventory/orderList.html', context)
 
 @login_required
